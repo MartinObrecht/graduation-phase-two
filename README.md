@@ -17,8 +17,8 @@ docker-compose -f docker-compose-staging.yml up --build
 docker-compose up --build 
 ```
 
-## Key words
-`TBD`
+## Wiki
+Access our [Wiki](https://dev.azure.com/fiap-net-group/FIAP/_wiki/wikis/FIAP.wiki/1/Graduation-Phase-Two) for more information!
 
 ## Give a star
 If you found the project helpful or just want to help the developer, give the project a star!
