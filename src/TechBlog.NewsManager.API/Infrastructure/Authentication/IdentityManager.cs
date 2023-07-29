@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TechBlog.NewsManager.API.Domain.Authentication;
 
 namespace TechBlog.NewsManager.API.Infrastructure.Identity
 {
-    public class IdentityManager
+    public class IdentityManager : IIdentityManager
     {
 
     }

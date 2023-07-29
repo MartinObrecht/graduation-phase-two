@@ -1,26 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TechBlog.NewsManager.API.Domain.Entities;
 
-namespace TechBlog.NewsManager.API.Infrastructure.Database.Context
+namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.Context
 {
-    public sealed class SqlServerContext : DbContext, IDatabaseContext
+    public class IdentityContext : IdentityDbContext<BlogUser>, IIdentityContext
     {
-        public DbSet<BlogNew> BlogNews { get; set; }
-
-        public SqlServerContext(DbContextOptions<SqlServerContext> options) : base(options)
+        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SqlServerContext).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(IdentityContext).Assembly);
 
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
                 relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
         }
 
         public async Task<bool> AnyPendingMigrationsAsync()

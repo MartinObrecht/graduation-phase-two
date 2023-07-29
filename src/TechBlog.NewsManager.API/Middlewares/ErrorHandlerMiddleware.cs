@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
+using TechBlog.NewsManager.API.Application.Contracts.Responses;
 using TechBlog.NewsManager.API.Domain.Exceptions;
 using TechBlog.NewsManager.API.Domain.Logger;
-using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace PoliceDepartment.EvidenceManager.API.Middlewares
 {

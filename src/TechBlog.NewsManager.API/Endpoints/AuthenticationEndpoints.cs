@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TechBlog.NewsManager.API.Endpoints
+﻿namespace TechBlog.NewsManager.API.Endpoints
 {
-    public class AuthenticationEndpoints
+    public static class AuthenticationEndpoints
     {
-
+        public static IApplicationBuilder MapAuthenticationEndpoints(this WebApplication app)
+        {
+            return app;
+        }
     }
 }

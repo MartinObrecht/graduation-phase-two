@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TechBlog.NewsManager.API.Infrastructure.Identity
+namespace TechBlog.NewsManager.API.Application.ViewModels
 {
-    public class IdentityContext
+    public class AccessTokenViewModel
     {
 
     }
