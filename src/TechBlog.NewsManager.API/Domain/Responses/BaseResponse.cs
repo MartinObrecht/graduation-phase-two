@@ -1,6 +1,6 @@
 using TechBlog.NewsManager.API.Domain.Extensions;
 
-namespace TechBlog.NewsManager.API.Application.Contracts.Responses
+namespace TechBlog.NewsManager.API.Domain.Responses
 {
     public class BaseResponse
     {

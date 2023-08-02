@@ -12,12 +12,8 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
-            {
-                options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            });
+            services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
             return services;
         }

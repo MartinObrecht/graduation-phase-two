@@ -2,6 +2,7 @@
 {
     public enum BlogUserType
     {
-
+        READER = 1,
+        JOURNALIST = 2
     }
 }

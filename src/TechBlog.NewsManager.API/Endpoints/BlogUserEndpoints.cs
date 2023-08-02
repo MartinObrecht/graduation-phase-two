@@ -1,6 +1,6 @@
-﻿using TechBlog.NewsManager.API.Application.Contracts.Responses;
-using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
+﻿using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
 using TechBlog.NewsManager.API.Application.ViewModels;
+using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.API.Endpoints
 {

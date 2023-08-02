@@ -8,6 +8,8 @@ namespace TechBlog.NewsManager.API.DependencyInjection
         {
             services.AddApiConfiguration();
 
+            services.AddApplicationConfiguration();
+
             services.AddInfrastructureConfiguration(configuration);
 
             return services;

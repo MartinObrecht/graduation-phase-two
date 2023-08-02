@@ -1,4 +1,4 @@
-﻿namespace TechBlog.NewsManager.API.Application.Contracts.Responses
+﻿namespace TechBlog.NewsManager.API.Domain.Responses
 {
     public class BaseResponseWithValue<T> : BaseResponse
     {

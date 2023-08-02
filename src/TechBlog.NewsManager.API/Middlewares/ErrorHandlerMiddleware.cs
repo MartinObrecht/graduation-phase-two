@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using FluentValidation;
+using Newtonsoft.Json;
 using System.Net;
-using TechBlog.NewsManager.API.Application.Contracts.Responses;
 using TechBlog.NewsManager.API.Domain.Exceptions;
 using TechBlog.NewsManager.API.Domain.Logger;
+using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace PoliceDepartment.EvidenceManager.API.Middlewares
 {
@@ -47,6 +48,12 @@ namespace PoliceDepartment.EvidenceManager.API.Middlewares
 
                 await HandleExceptionAsync(context, ex);
             }
+            catch(ValidationException ex)
+            {
+                _logger.LogWarning("Validation error caught by middleware", ("exception", ex));
+
+                await HandleExceptionAsync(context, ex);
+            }
             catch (Exception ex)
             {
                 _logger.LogError("Unexpected error caught by middleware", ex);
@@ -69,6 +76,15 @@ namespace PoliceDepartment.EvidenceManager.API.Middlewares
             var code = HttpStatusCode.Unauthorized;
 
             var result = JsonConvert.SerializeObject(new BaseResponse().AsError(null, exception.Message));
+
+            return ErrorResponse(context, result, code);
+        }
+
+        private static Task HandleExceptionAsync(HttpContext context, ValidationException exception)
+        {
+            var code = HttpStatusCode.BadRequest;
+
+            var result = JsonConvert.SerializeObject(new BaseResponse().AsError(ResponseMessage.InvalidInformation, exception.Errors.Select(e => e.ErrorMessage).ToArray()));
 
             return ErrorResponse(context, result, code);
         }
