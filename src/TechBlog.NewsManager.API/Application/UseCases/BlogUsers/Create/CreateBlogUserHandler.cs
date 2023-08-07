@@ -8,17 +8,13 @@ using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
 {
-    //TODO:
-    //testes unitários
-    //Adicionar validação dos campos
-    //Adicionar método para o middleware de ex
     public static class CreateBlogUserHandler
     {
         public static string Route => "/api/v1/users";
         public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
         public static Delegate Handle => Action;
 
-        internal static async Task<IResult> Action(IIdentityManager identityManager,
+        public static async Task<IResult> Action(IIdentityManager identityManager,
                                                    ILoggerManager logger,
                                                    IMapper mapper,
                                                    IValidator<CreateBlogUserRequest> validator,

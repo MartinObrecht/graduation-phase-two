@@ -1,6 +1,5 @@
 ﻿using PoliceDepartment.EvidenceManager.API.Middlewares;
 using System.Text.Json.Serialization;
-using System.Text.Json;
 using TechBlog.NewsManager.API.Endpoints;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
@@ -10,7 +9,6 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
 
             services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -18,11 +16,8 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             return services;
         }
 
-        public static IApplicationBuilder UseApiConfiguration(this WebApplication app) 
+        public static IApplicationBuilder UseApiConfiguration(this WebApplication app, bool isDevelopment) 
         { 
-            app.UseSwagger();
-            app.UseSwaggerUI();
-
             app.UseRouting();
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
@@ -32,6 +27,11 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             app.MapBlogUsersEndpoints();
             app.MapBlogNewsEndpoints();
             app.MapAuthenticationEndpoints();
+
+            if (!isDevelopment)
+            {
+                app.UseMiddleware<ApiKeyMiddleware>();
+            }
 
             return app;
         }

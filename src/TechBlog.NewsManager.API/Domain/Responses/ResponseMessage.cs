@@ -23,6 +23,8 @@ namespace TechBlog.NewsManager.API.Domain.Responses
         [Description("Invalid user type")]
         InvalidUserType = 9,
         [Description("Invalid information")]
-        InvalidInformation = 10
+        InvalidInformation = 10,
+        [Description("Invalid credentials")]
+        InvalidCredentials = 11,
     }
 }
