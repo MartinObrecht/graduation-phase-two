@@ -13,7 +13,7 @@ namespace TechBlog.NewsManager.API.Endpoints
               .WithDescription("Create a new Blog User")
               .WithDisplayName("Create Blog User")
               .ProducesValidationProblem()
-              .Produces<BaseResponseWithValue<AccessTokenViewModel>>(StatusCodes.Status200OK)
+              .Produces<BaseResponse>(StatusCodes.Status200OK)
               .Produces(StatusCodes.Status400BadRequest);
 
             return app;

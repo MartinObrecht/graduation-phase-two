@@ -8,10 +8,6 @@ using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
 {
-    //TODO:
-    //testes unitários
-    //Adicionar validação dos campos
-    //Adicionar método para o middleware de ex
     public static class CreateBlogUserHandler
     {
         public static string Route => "/api/v1/users";

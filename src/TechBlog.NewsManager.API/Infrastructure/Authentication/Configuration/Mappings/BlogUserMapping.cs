@@ -14,6 +14,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
             builder.HasKey(b => b.Id);
 
             builder.Property(b => b.Id).IsRequired();
+            builder.Ignore(b => b.InternalId);
 
             builder.Property(b => b.BlogUserType)
                               .IsRequired()
