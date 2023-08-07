@@ -11,7 +11,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.Authentication.Login
         public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
         public static Delegate Handle => Action;
 
-        internal static async Task<IResult> Action(ILoggerManager logger, IIdentityManager identityManager, LoginRequest request, CancellationToken cancellationToken)
+        public static async Task<IResult> Action(ILoggerManager logger, IIdentityManager identityManager, LoginRequest request, CancellationToken cancellationToken)
         {
             logger.LogDebug("Begin Login", ("username", request.Username));
 

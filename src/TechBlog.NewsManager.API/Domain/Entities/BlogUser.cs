@@ -17,10 +17,23 @@ namespace TechBlog.NewsManager.API.Domain.Entities
 
         public BlogUser()
         {
-            if (string.IsNullOrWhiteSpace(base.Id) || !Guid.TryParse(base.Id, out var id))
-                return;
+        }
 
-            InternalId = id;
+        public BlogUser(bool valid)
+        {
+            if (!valid)
+            {
+                Id = string.Empty;
+                InternalId = Guid.Empty;
+            }
+        }
+
+        public BlogUser WithInternalIdMapped()
+        {
+            if(Guid.TryParse(Id, out var internalId))
+                InternalId = internalId;
+
+            return this;
         }
     }
 }

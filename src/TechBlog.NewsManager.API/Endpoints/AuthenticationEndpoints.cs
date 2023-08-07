@@ -1,6 +1,7 @@
 ﻿using TechBlog.NewsManager.API.Application.UseCases.Authentication.Login;
 using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
 using TechBlog.NewsManager.API.Application.ViewModels;
+using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.API.Endpoints
@@ -14,7 +15,7 @@ namespace TechBlog.NewsManager.API.Endpoints
              .WithDescription("Authenticate the user")
              .WithDisplayName("Authenticate the user")
              .ProducesValidationProblem()
-             .Produces<BaseResponseWithValue<AccessTokenViewModel>>(StatusCodes.Status200OK)
+             .Produces<BaseResponseWithValue<AccessTokenModel>>(StatusCodes.Status200OK)
              .Produces(StatusCodes.Status400BadRequest);
 
             return app;

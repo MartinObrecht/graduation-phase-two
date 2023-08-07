@@ -51,7 +51,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Identity
 
             var user = await _userManager.FindByEmailAsync(email);
 
-            return user ?? new BlogUser();
+            return user is not null ? user.WithInternalIdMapped() : new BlogUser(false);
         }
 
         public async Task<AccessTokenModel> AuthenticateAsync(BlogUser user, string password, CancellationToken cancellationToken, params (string name, string value)[] customClaims)
@@ -64,9 +64,9 @@ namespace TechBlog.NewsManager.API.Infrastructure.Identity
             var claims = await _userManager.GetClaimsAsync(user);
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            foreach (var (Name, Value) in customClaims)            
+            foreach (var (Name, Value) in customClaims)
                 claims.Add(new Claim(Name, Value));
-            
+
             claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, user.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));

@@ -14,7 +14,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
         public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
         public static Delegate Handle => Action;
 
-        internal static async Task<IResult> Action(IIdentityManager identityManager,
+        public static async Task<IResult> Action(IIdentityManager identityManager,
                                                    ILoggerManager logger,
                                                    IMapper mapper,
                                                    IValidator<CreateBlogUserRequest> validator,
