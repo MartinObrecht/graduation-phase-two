@@ -10,6 +10,8 @@ namespace TechBlog.NewsManager.API.DependencyInjection
 
             app.UseInfrastructureConfiguration();
 
+            app.UseSwaggerConfiguration();
+
             return app;
         }
     }

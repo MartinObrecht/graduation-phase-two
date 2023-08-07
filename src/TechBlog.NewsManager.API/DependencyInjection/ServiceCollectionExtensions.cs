@@ -12,6 +12,8 @@ namespace TechBlog.NewsManager.API.DependencyInjection
 
             services.AddInfrastructureConfiguration(configuration);
 
+            services.AddSwaggerConfiguration();
+
             return services;
         }
     }

@@ -1,4 +1,5 @@
-﻿using TechBlog.NewsManager.API.Domain.Authentication;
+﻿using Microsoft.AspNetCore.Mvc;
+using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
 
