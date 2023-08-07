@@ -18,7 +18,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             return services;
         }
 
-        public static IApplicationBuilder UseApiConfiguration(this WebApplication app) 
+        public static IApplicationBuilder UseApiConfiguration(this WebApplication app, bool isDevelopment) 
         { 
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -32,6 +32,11 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             app.MapBlogUsersEndpoints();
             app.MapBlogNewsEndpoints();
             app.MapAuthenticationEndpoints();
+
+            if (!isDevelopment)
+            {
+                app.UseMiddleware<ApiKeyMiddleware>();
+            }
 
             return app;
         }
