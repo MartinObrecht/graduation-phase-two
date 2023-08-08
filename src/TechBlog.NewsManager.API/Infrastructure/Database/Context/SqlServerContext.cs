@@ -1,16 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using TechBlog.NewsManager.API.Domain.Entities;
+using TechBlog.NewsManager.API.Domain.Logger;
 
 namespace TechBlog.NewsManager.API.Infrastructure.Database.Context
 {
     public sealed class SqlServerContext : DbContext, IDatabaseContext
     {
-        public DbSet<BlogNew> BlogNews { get; set; }
+        private readonly ILoggerManager _logger;
+        public DbSet<BlogNew> BlogNew { get; set; }
 
-        public SqlServerContext(DbContextOptions<SqlServerContext> options) : base(options)
+        public SqlServerContext(DbContextOptions<SqlServerContext> options, ILoggerManager logger) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
+            _logger = logger;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,6 +49,31 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Context
         public async Task TestConnectionAsync()
         {
             _ = await Database.ExecuteSqlRawAsync("SELECT 1");
+        }
+
+        public async new Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return await base.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
+        {
+            return await Database.BeginTransactionAsync(cancellationToken);
+        }
+
+        public Task<bool> CommitTransactionAsync(IDbContextTransaction transaction, CancellationToken cancellationToken)
+        {
+            try 
+            {
+                transaction.Commit();
+                return Task.FromResult(true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error commiting transaction", ex);
+                transaction.Rollback();
+                return Task.FromResult(false);
+            }
         }
     }
 }

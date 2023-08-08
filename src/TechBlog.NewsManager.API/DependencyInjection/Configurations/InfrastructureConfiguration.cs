@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Repositories;
+using TechBlog.NewsManager.API.Domain.ValueObjects;
 using TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.Context;
+using TechBlog.NewsManager.API.Infrastructure.Database;
 using TechBlog.NewsManager.API.Infrastructure.Database.Context;
 using TechBlog.NewsManager.API.Infrastructure.Database.Repositories;
 using TechBlog.NewsManager.API.Infrastructure.Identity;
@@ -17,6 +22,8 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
         public static IServiceCollection AddInfrastructureConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<ILoggerManager, ConsoleLogger>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IBlogNewsRepository, BlogNewsRepository>();
 
@@ -42,6 +49,31 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             }
             ).AddEntityFrameworkStores<IdentityContext>()
              .AddDefaultTokenProviders();
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(AuthorizationPolicies.IsJournalist, policy => policy.RequireClaim("BlogUserType", Enum.GetName(BlogUserType.JOURNALIST)));
+            });
 
             return services;
         }
