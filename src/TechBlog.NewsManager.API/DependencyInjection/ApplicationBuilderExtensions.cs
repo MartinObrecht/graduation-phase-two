@@ -6,7 +6,11 @@ namespace TechBlog.NewsManager.API.DependencyInjection
     {
         internal static IApplicationBuilder UseDependencyInjection(this WebApplication app, bool isDevelopment)
         {
+            app.UseAuthentication();
+
             app.UseApiConfiguration(isDevelopment);
+
+            app.UseAuthorization();
 
             app.UseInfrastructureConfiguration();
 
