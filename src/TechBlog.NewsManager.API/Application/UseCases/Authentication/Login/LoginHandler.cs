@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
 using TechBlog.NewsManager.API.Domain.Authentication;
+using TechBlog.NewsManager.API.Domain.Extensions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
 
@@ -11,9 +14,15 @@ namespace TechBlog.NewsManager.API.Application.UseCases.Authentication.Login
         public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
         public static Delegate Handle => Action;
 
-        public static async Task<IResult> Action(ILoggerManager logger, IIdentityManager identityManager, LoginRequest request, CancellationToken cancellationToken)
+        public static async Task<IResult> Action(ILoggerManager logger, 
+                                                 IValidator<LoginRequest> validator, 
+                                                 IIdentityManager identityManager, 
+                                                 LoginRequest request, 
+                                                 CancellationToken cancellationToken)
         {
             logger.LogDebug("Begin Login", ("username", request.Username));
+
+            validator.ThrowIfInvalid(request);
 
             var response = new BaseResponseWithValue<AccessTokenModel>();
 
