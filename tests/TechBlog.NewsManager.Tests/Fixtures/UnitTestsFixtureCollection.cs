@@ -7,11 +7,13 @@
     {
         public AuthorizationFixtures Authorization { get; set; }
         public HttpContextFixtures HttpContext { get; set; }
+        public BlogNewFixtures BlogNew { get; set; }
 
         public UnitTestsFixture()
         {
             Authorization = new();
             HttpContext = new();
+            BlogNew = new();
         }
     }
 }

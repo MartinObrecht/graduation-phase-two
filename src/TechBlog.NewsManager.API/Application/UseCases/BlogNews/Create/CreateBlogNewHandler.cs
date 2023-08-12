@@ -1,8 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using AutoMapper;
 using FluentValidation;
-using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Exceptions;
@@ -34,7 +32,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create
         /// <response code="401" cref="BaseResponse">Unauthorized</response>
         /// <response code="403" cref="BaseResponse">User is not a Journalist</response>
         /// <returns></returns>
-        internal static async Task<IResult> Action(ILoggerManager logger,
+        public static async Task<IResult> Action(ILoggerManager logger,
                                                     IMapper mapper,
                                                     IUnitOfWork unitOfWork,
                                                     CreateBlogNewRequest request,
@@ -56,7 +54,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create
             {
                 logger.LogInformation("User is forbidden to create a new", ("Title", request.Title), ("userId", blogNew.AuthorId));
 
-                return Results.Forbid();
+                return Results.BadRequest(response.AsError(ResponseMessage.UserMustBeAJournalist));
             }
 
             await unitOfWork.BlogNew.AddAsync(blogNew, cancellationToken);
