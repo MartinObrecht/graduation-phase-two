@@ -1,4 +1,5 @@
 ﻿using TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create;
+using TechBlog.NewsManager.API.Application.UseCases.BlogNews.Delete;
 using TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy;
 using TechBlog.NewsManager.API.Application.ViewModels;
 using TechBlog.NewsManager.API.Domain.Authentication;
@@ -29,6 +30,16 @@ namespace TechBlog.NewsManager.API.Endpoints
               .Produces<BaseResponseWithValue<BlogNewViewModel[]>>(StatusCodes.Status200OK)
               .Produces<BaseResponse>(StatusCodes.Status400BadRequest)
               .Produces<BaseResponse>(StatusCodes.Status404NotFound)
+              .Produces<BaseResponse>(StatusCodes.Status401Unauthorized);
+
+            app.MapMethods(DeleteBlogNewHandler.Route, DeleteBlogNewHandler.Methods, DeleteBlogNewHandler.Handle)
+              .WithTags("Blog New")
+              .WithDescription("Delete a blog new")
+              .WithDisplayName("Delete blog new")
+              .ProducesValidationProblem()
+              .RequireAuthorization(AuthorizationPolicies.IsJournalist)
+              .Produces<BaseResponse>(StatusCodes.Status200OK)
+              .Produces<BaseResponse>(StatusCodes.Status400BadRequest)
               .Produces<BaseResponse>(StatusCodes.Status401Unauthorized);
 
             return app;

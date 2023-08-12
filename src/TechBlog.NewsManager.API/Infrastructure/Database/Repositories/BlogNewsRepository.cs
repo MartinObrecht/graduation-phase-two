@@ -101,5 +101,10 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
 
             return blogNews;
         }
+
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            await _context.BlogNew.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
+        }
     }
 }
