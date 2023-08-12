@@ -60,11 +60,11 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
 
         public async Task<IEnumerable<BlogNew>> GetByTagsDateAsync(string[] tags, CancellationToken cancellationToken = default)
         {
-            var queryBuilder = new StringBuilder($" Tags CONTAINS {tags[0]}");
+            var queryBuilder = new StringBuilder($"WHERE News.[Tags] LIKE '%{tags[0]}%'");
 
             for (int i = 1; i < tags.Length; i++)
             {
-                queryBuilder.Append($" OR Tags CONTAINS {tags[i]}");
+                queryBuilder.Append($" OR News.[Tags] LIKE '%{tags[0]}%'");
             }
 
             var query = BlogNewsQueriesExtensions.GetByTagsQuery + queryBuilder.ToString();

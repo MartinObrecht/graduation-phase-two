@@ -4,6 +4,6 @@ namespace TechBlog.NewsManager.API.Domain.Strategies
 {
     public interface IStrategyHub
     {
-        Task<IGetBlogNewsStrategy> FindGetBlogNewsStrategy(GetBlogNewsStrategy strategy, CancellationToken cancellationToken);
+        Task<object> GetBlogNewsByStrategy(GetBlogNewsStrategy strategy, GetBlogNewsStrategyBody body, CancellationToken cancellationToken);
     }
 }

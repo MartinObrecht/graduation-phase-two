@@ -15,7 +15,7 @@ namespace TechBlog.NewsManager.API.Application.Strategies
             _logger = logger;
         }
 
-        public Task<IGetBlogNewsStrategy> FindGetBlogNewsStrategy(GetBlogNewsStrategy strategy, CancellationToken cancellationToken)
+        public async Task<object> GetBlogNewsByStrategy(GetBlogNewsStrategy strategy, GetBlogNewsStrategyBody body, CancellationToken cancellationToken)
         {
             _logger.LogDebug("Searching strategy", ("strategy", Enum.GetName(strategy)));
 
@@ -37,7 +37,7 @@ namespace TechBlog.NewsManager.API.Application.Strategies
 
             _logger.LogDebug("Strategy was found", ("strategy", Enum.GetName(strategy)));
 
-            return Task.FromResult(matchedStrategies[0]);
+            return await matchedStrategies[0].RunAsync(body, cancellationToken);
         }
     }
 }

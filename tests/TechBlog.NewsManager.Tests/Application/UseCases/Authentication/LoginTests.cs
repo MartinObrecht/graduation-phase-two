@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using TechBlog.NewsManager.API.Application.UseCases.Authentication.Login;
@@ -16,12 +17,14 @@ namespace TechBlog.NewsManager.Tests.Application.UseCases.Authentication
         private readonly UnitTestsFixture _fixture;
 
         private readonly ILoggerManager _logger;
+        private readonly IValidator<LoginRequest> _validator;
         private readonly IIdentityManager _identityManager;
 
         public LoginTests(UnitTestsFixture fixture)
         {
             _fixture = fixture;
             _logger = Substitute.For<ILoggerManager>();
+            _validator = Substitute.For<IValidator<LoginRequest>>();
             _identityManager = Substitute.For<IIdentityManager>();
         }
 
@@ -71,7 +74,7 @@ namespace TechBlog.NewsManager.Tests.Application.UseCases.Authentication
             var request = new LoginRequest("validusername@email.com", "validPassword!23");
 
             //Act
-            var response = LoginHandler.Action(_logger, _identityManager, request, CancellationToken.None).Result;
+            var response = LoginHandler.Action(_logger, _validator, _identityManager, request, CancellationToken.None).Result;
             var responseContext = _fixture.HttpContext.GetResposeHttpContext(response);
             var responseBody = _fixture.HttpContext.GetObjectFromBodyAsync<BaseResponseWithValue<AccessTokenModel>>(responseContext).Result;
 

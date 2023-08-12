@@ -32,6 +32,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             services.AddScoped<IGetBlogNewsStrategy, GetByCreateOrUpdateDateStrategy>();
             services.AddScoped<IGetBlogNewsStrategy, GetByIdStrategy>();
             services.AddScoped<IGetBlogNewsStrategy, GetByTagStrategy>();
+            services.AddScoped<IGetBlogNewsStrategy, GetByNameStrategy>();
 
             return services;
         }

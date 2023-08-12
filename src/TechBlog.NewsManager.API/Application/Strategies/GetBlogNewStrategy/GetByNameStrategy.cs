@@ -1,4 +1,7 @@
-﻿using TechBlog.NewsManager.API.Domain.Database;
+﻿using AutoMapper;
+using TechBlog.NewsManager.API.Application.ViewModels;
+using TechBlog.NewsManager.API.Domain.Database;
+using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Exceptions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
@@ -9,13 +12,15 @@ namespace TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy
     {
         private readonly ILoggerManager _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public GetBlogNewsStrategy Strategy => GetBlogNewsStrategy.GET_BY_NAME;
 
-        public GetByNameStrategy(ILoggerManager logger, IUnitOfWork unitOfWork)
+        public GetByNameStrategy(ILoggerManager logger, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<object> RunAsync(GetBlogNewsStrategyBody body, CancellationToken cancellationToken)
@@ -33,7 +38,7 @@ namespace TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy
 
             _logger.LogDebug("End getting blognew by name", ("strategy", Strategy), ("body", body), ("newsFoundCount", blogNews.Count()));
 
-            return blogNews;
+            return _mapper.Map<IEnumerable<BlogNewViewModel>>(blogNews);
         }
     }
 }

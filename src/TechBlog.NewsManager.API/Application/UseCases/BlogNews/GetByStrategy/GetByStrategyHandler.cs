@@ -71,11 +71,9 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy
 
             var response = new BaseResponseWithValue<object>();
 
-            var matchedStrategy = await strategyHub.FindGetBlogNewsStrategy(request.Strategy, cancellationToken);
-
             var strategyBody = mapper.Map<GetBlogNewsStrategyBody>(request);
 
-            var strategyResponse = await matchedStrategy.RunAsync(strategyBody, cancellationToken);
+            var strategyResponse = await strategyHub.GetBlogNewsByStrategy(request.Strategy, strategyBody, cancellationToken);
 
             logger.LogDebug("End get news", ("strategy", request.Strategy));
 

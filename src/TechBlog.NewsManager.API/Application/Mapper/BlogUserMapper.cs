@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
+using TechBlog.NewsManager.API.Application.ViewModels;
 using TechBlog.NewsManager.API.Domain.Entities;
 
 namespace TechBlog.NewsManager.API.Application.Mapper
@@ -28,6 +29,8 @@ namespace TechBlog.NewsManager.API.Application.Mapper
                 .ForMember(e => e.AccessFailedCount, mapper => mapper.Ignore())
                 .ForMember(e => e.EmailConfirmed, mapper => mapper.MapFrom(r => true))
                 .ForMember(e => e.InternalId, mapper => mapper.Ignore());
+
+            CreateMap<BlogUserViewModel, BlogUser>().ReverseMap();
         }
     }
 }
