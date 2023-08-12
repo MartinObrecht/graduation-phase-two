@@ -9,7 +9,8 @@ namespace TechBlog.NewsManager.API.Domain.Database
         Task<IEnumerable<BlogNew>> GetByCreateOrUpdateDateAsync(DateTime from, DateTime to, CancellationToken cancellationToken = default);
         Task<BlogNew> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<IEnumerable<BlogNew>> GetByNameAsync(string name, CancellationToken cancellationToken = default);
-        Task<IEnumerable<BlogNew>> GetByTagsDateAsync(string[] tags, CancellationToken cancellationToken = default);
+        Task<IEnumerable<BlogNew>> GetByTagsAsync(string[] tags, CancellationToken cancellationToken = default);
+
         Task DeleteAsync(Guid Id, CancellationToken cancellationToken = default);
     }
 }
