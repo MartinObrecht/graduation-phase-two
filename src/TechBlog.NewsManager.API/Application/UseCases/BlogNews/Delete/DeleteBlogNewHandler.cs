@@ -26,7 +26,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Delete
         /// <response code="403" cref="BaseResponse">When the user is not allowed to delete the blog new</response>
         /// <response code="404" cref="BaseResponse">When the blog new was not found</response>
         /// <returns>The result of the delete blog new action.</returns>
-        internal static async Task<IResult> Action(ILoggerManager logger,
+        public static async Task<IResult> Action(ILoggerManager logger,
                                                     IUnitOfWork unitOfWork,
                                                     ClaimsPrincipal user,
                                                     Guid id,
@@ -36,7 +36,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Delete
 
             var blogNew = await unitOfWork.BlogNew.GetByIdAsync(id, cancellationToken);
 
-            if (blogNew.Enabled)
+            if (!blogNew.Enabled)
             {
                 logger.LogDebug("Blog new not found", ("Id", id));
 
