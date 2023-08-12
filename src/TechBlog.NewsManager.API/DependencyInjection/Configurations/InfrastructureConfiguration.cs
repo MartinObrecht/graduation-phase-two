@@ -1,12 +1,13 @@
-﻿using System.Text;
+﻿using System.Data.SqlClient;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TechBlog.NewsManager.API.Domain.Authentication;
+using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Logger;
-using TechBlog.NewsManager.API.Domain.Repositories;
 using TechBlog.NewsManager.API.Domain.ValueObjects;
 using TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.Context;
 using TechBlog.NewsManager.API.Infrastructure.Database;
@@ -32,6 +33,8 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             {
                 options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
             });
+
+            services.AddScoped(o => new SqlConnection(configuration.GetConnectionString("SqlServerConnection")));
 
             services.AddScoped<IIdentityManager, IdentityManager>();
             services.AddScoped<IIdentityContext, IdentityContext>();

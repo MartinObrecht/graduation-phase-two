@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
@@ -30,7 +31,12 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 
         private static string SchemaIdStrategy(Type currentClass)
         {
-            return currentClass.Name.Replace("ViewModel", string.Empty).Replace("Model", string.Empty);
+            var builder = new StringBuilder(currentClass.Name.Replace("ViewModel", string.Empty).Replace("Model", string.Empty));
+
+            for (int i = 0; i < currentClass.GenericTypeArguments.Length; i++)            
+                builder.Append(currentClass.GenericTypeArguments[0].Name);            
+
+            return builder.ToString();
         }
 
         private static void AddSecurity(this SwaggerGenOptions options)
@@ -120,12 +126,6 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
                 var description = apiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
 
                 parameter.Description ??= description.ModelMetadata.Description;
-
-                if (parameter.Schema.Default == null && description.DefaultValue != null)
-                {
-                    var json = System.Text.Json.JsonSerializer.Serialize(description.DefaultValue, description.ModelMetadata.ModelType);
-                    parameter.Schema.Default = OpenApiAnyFactory.CreateFromJson(json);
-                }
 
                 parameter.Required |= description.IsRequired;
             }

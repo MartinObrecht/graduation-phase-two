@@ -4,8 +4,8 @@ using TechBlog.NewsManager.API.Application.Strategies;
 using TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy;
 using TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create;
 using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
-using TechBlog.NewsManager.API.Domain.Domain.Strategies;
-using TechBlog.NewsManager.API.Domain.Domain.Strategies.GetBlogUser;
+using TechBlog.NewsManager.API.Domain.Strategies;
+using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
@@ -28,10 +28,10 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
         {
             services.AddScoped<IStrategyHub, StrategyHub>();
 
-            services.AddScoped<IGetBlogUserStrategy, GetByCreateDateStrategy>();
-            services.AddScoped<IGetBlogUserStrategy, GetByCreateOrUpdateDateStrategy>();
-            services.AddScoped<IGetBlogUserStrategy, GetByIdStrategy>();
-            services.AddScoped<IGetBlogUserStrategy, GetByTagStrategy>();
+            services.AddScoped<IGetBlogNewsStrategy, GetByCreateDateStrategy>();
+            services.AddScoped<IGetBlogNewsStrategy, GetByCreateOrUpdateDateStrategy>();
+            services.AddScoped<IGetBlogNewsStrategy, GetByIdStrategy>();
+            services.AddScoped<IGetBlogNewsStrategy, GetByTagStrategy>();
 
             return services;
         }

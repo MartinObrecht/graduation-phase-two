@@ -1,5 +1,6 @@
 ﻿using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
 using TechBlog.NewsManager.API.Application.ViewModels;
+using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.API.Endpoints
@@ -13,7 +14,7 @@ namespace TechBlog.NewsManager.API.Endpoints
               .WithDescription("Create a new Blog User")
               .WithDisplayName("Create Blog User")
               .ProducesValidationProblem()
-              .Produces<BaseResponse>(StatusCodes.Status200OK)
+              .Produces<BaseResponseWithValue<AccessTokenModel>>(StatusCodes.Status200OK)
               .Produces(StatusCodes.Status400BadRequest);
 
             return app;

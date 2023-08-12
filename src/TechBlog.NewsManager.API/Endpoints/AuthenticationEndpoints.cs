@@ -16,7 +16,7 @@ namespace TechBlog.NewsManager.API.Endpoints
              .WithDisplayName("Authenticate the user")
              .ProducesValidationProblem()
              .Produces<BaseResponseWithValue<AccessTokenModel>>(StatusCodes.Status200OK)
-             .Produces(StatusCodes.Status400BadRequest);
+             .Produces<BaseResponse>(StatusCodes.Status400BadRequest);
 
             return app;
         }

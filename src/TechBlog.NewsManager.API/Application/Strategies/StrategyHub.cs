@@ -1,25 +1,25 @@
-﻿using TechBlog.NewsManager.API.Domain.Domain.Strategies;
-using TechBlog.NewsManager.API.Domain.Domain.Strategies.GetBlogUser;
-using TechBlog.NewsManager.API.Domain.Logger;
+﻿using TechBlog.NewsManager.API.Domain.Logger;
+using TechBlog.NewsManager.API.Domain.Strategies;
+using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
 
 namespace TechBlog.NewsManager.API.Application.Strategies
 {
     public class StrategyHub : IStrategyHub
     {
-        private readonly IEnumerable<IGetBlogUserStrategy> _getBlogUserStrategies;
+        private readonly IEnumerable<IGetBlogNewsStrategy> _getBlogNewsStrategies;
         private readonly ILoggerManager _logger;
 
-        public StrategyHub(IEnumerable<IGetBlogUserStrategy> getBlogUserStrategies, ILoggerManager logger)
+        public StrategyHub(IEnumerable<IGetBlogNewsStrategy> getBlogNewsStrategies, ILoggerManager logger)
         {
-            _getBlogUserStrategies = getBlogUserStrategies;
+            _getBlogNewsStrategies = getBlogNewsStrategies;
             _logger = logger;
         }
 
-        public Task<IGetBlogUserStrategy> FindGetBlogUserStrategy(GetBlogUserStrategy strategy, CancellationToken cancellationToken)
+        public Task<IGetBlogNewsStrategy> FindGetBlogNewsStrategy(GetBlogNewsStrategy strategy, CancellationToken cancellationToken)
         {
             _logger.LogDebug("Searching strategy", ("strategy", Enum.GetName(strategy)));
 
-            var matchedStrategies = _getBlogUserStrategies.Where(s => s.Strategy == strategy).ToList();
+            var matchedStrategies = _getBlogNewsStrategies.Where(s => s.Strategy == strategy).ToList();
 
             if(matchedStrategies.Count == 0)
             {

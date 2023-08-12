@@ -1,4 +1,4 @@
-﻿namespace TechBlog.NewsManager.API.Domain.Repositories
+﻿namespace TechBlog.NewsManager.API.Domain.Database
 {
     public interface IBaseContext : IDisposable
     {

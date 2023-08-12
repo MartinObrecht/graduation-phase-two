@@ -14,18 +14,35 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
         public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
         public static Delegate Handle => Action;
 
+        /// <summary>
+        /// Create a new BlogUser
+        /// </summary>
+        /// <param name="identityManager"></param>
+        /// <param name="logger"></param>
+        /// <param name="mapper"></param>
+        /// <param name="validator"></param>
+        /// <param name="request">The create blog user request body</param>
+        /// <param name="cancellationToken"></param>
+        /// <remarks>
+        /// To use the endpoint, the user type must be one of the following:
+        ///   - READER,
+        ///   - JOURNALIST
+        /// </remarks>
+        /// <response code="201" cref="BaseResponse">BlogUser created</response>
+        /// <response code="400" cref="BaseResponse">Invalid information or user already exists</response>
+        /// <returns></returns>
         public static async Task<IResult> Action(IIdentityManager identityManager,
-                                                   ILoggerManager logger,
-                                                   IMapper mapper,
-                                                   IValidator<CreateBlogUserRequest> validator,
-                                                   CreateBlogUserRequest request,
-                                                   CancellationToken cancellationToken)
+                                                 ILoggerManager logger,
+                                                 IMapper mapper,
+                                                 IValidator<CreateBlogUserRequest> validator,
+                                                 CreateBlogUserRequest request,
+                                                 CancellationToken cancellationToken)
         {
             logger.LogDebug("Begin creating user", ("Email", request.Email));
 
             validator.ThrowIfInvalid(request);
 
-            var response = new BaseResponse();
+            var response = new BaseResponseWithValue<AccessTokenModel>();
 
             var blogUser = mapper.Map<BlogUser>(request);
 
@@ -45,9 +62,13 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
                 return Results.BadRequest(response.AsError(ResponseMessage.InvalidInformation));
             }
 
+            blogUser.WithInternalIdMapped();
+
+            var accessToken = await identityManager.AuthenticateAsync(blogUser, request.Password, cancellationToken, ("name", blogUser.Name));
+
             logger.LogDebug("Success creating user", ("Email", request.Email));
 
-            return Results.Ok(response.AsSuccess());
+            return Results.Created(Route, response.AsSuccess(accessToken));
         }
     }
 }

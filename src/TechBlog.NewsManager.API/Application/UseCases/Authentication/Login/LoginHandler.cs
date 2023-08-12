@@ -14,6 +14,17 @@ namespace TechBlog.NewsManager.API.Application.UseCases.Authentication.Login
         public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
         public static Delegate Handle => Action;
 
+        /// <summary>
+        /// Generate the access token for the API
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="validator"></param>
+        /// <param name="identityManager"></param>
+        /// <param name="request">The login body</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <response code="200" cref="BaseResponseWithValue{T}">Authenticated successfully</response>
+        /// <response code="400" cref="BaseResponse">User don't exists or Invalid credentials</response>
         public static async Task<IResult> Action(ILoggerManager logger, 
                                                  IValidator<LoginRequest> validator, 
                                                  IIdentityManager identityManager, 
