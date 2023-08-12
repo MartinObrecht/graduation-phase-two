@@ -33,7 +33,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Logger
             parameters.CopyTo(newParameters, 0);
 
             if (exception != null)
-                newParameters[newParameters.Length + 1] = (nameof(exception), exception);
+                newParameters[^1] = (nameof(exception), exception);
 
             Log(message, LoggerManagerSeverity.ERROR, newParameters);
         }
@@ -45,7 +45,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Logger
             parameters.CopyTo(newParameters, 0);
 
             if (exception != null)
-                newParameters[newParameters.Length + 1] = (nameof(exception), exception);
+                newParameters[^1] = (nameof(exception), exception);
 
             Log(message, LoggerManagerSeverity.CRITICAL, newParameters);
         }

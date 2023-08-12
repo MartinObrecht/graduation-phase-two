@@ -3,12 +3,13 @@ using System.Security.Claims;
 using AutoMapper;
 using FluentValidation;
 using TechBlog.NewsManager.API.Domain.Authentication;
+using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Exceptions;
 using TechBlog.NewsManager.API.Domain.Extensions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
-using TechBlog.NewsManager.API.Infrastructure.Database;
+using TechBlog.NewsManager.API.Domain.ValueObjects;
 
 namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create
 {
@@ -16,13 +17,27 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create
     {
         public static string Route => "/api/v1/blognew";
         public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
-
-
         public static Delegate Handle => Action;
-        internal static async Task<IResult> Action( ILoggerManager logger,
+
+        /// <summary>
+        /// Create a new BlogNew
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="mapper"></param>
+        /// <param name="unitOfWork"></param>
+        /// <param name="request">The create new request body</param>
+        /// <param name="user"></param>
+        /// <param name="validator"></param>
+        /// <param name="cancellationToken"></param>
+        /// <response code="201" cref="BaseResponse">BlogNew created</response>
+        /// <response code="400" cref="BaseResponse">Invalid information</response>
+        /// <response code="401" cref="BaseResponse">Unauthorized</response>
+        /// <response code="403" cref="BaseResponse">User is not a Journalist</response>
+        /// <returns></returns>
+        internal static async Task<IResult> Action(ILoggerManager logger,
                                                     IMapper mapper,
                                                     IUnitOfWork unitOfWork,
-                                                    CreateBlogNewRequest request, 
+                                                    CreateBlogNewRequest request,
                                                     ClaimsPrincipal user,
                                                     IValidator<CreateBlogNewRequest> validator,
                                                     CancellationToken cancellationToken)
@@ -32,7 +47,17 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create
             var response = new BaseResponse();
 
             var blogNew = mapper.Map<BlogNew>(request);
+
             blogNew.AuthorId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var userType = user.FindFirstValue("BlogUserType");
+
+            if (string.IsNullOrWhiteSpace(userType) || userType != Enum.GetName(BlogUserType.JOURNALIST))
+            {
+                logger.LogInformation("User is forbidden to create a new", ("Title", request.Title), ("userId", blogNew.AuthorId));
+
+                return Results.Forbid();
+            }
 
             await unitOfWork.BlogNew.AddAsync(blogNew, cancellationToken);
 
@@ -43,8 +68,8 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create
                 throw new InfrastructureException("An unexpected error ocurred");
             }
 
-            return Results.Ok(response.AsSuccess());
+            return Results.Created(Route, response.AsSuccess());
         }
-        
+
     }
 }

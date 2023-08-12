@@ -34,5 +34,7 @@ namespace TechBlog.NewsManager.API.Domain.Responses
         InvalidBody = 14,
         [Description("Invalid tags")]
         InvalidTags = 15,
+        [Description("User must be a journalist")]
+        UserMustBeAJournalist = 16
     }
 }

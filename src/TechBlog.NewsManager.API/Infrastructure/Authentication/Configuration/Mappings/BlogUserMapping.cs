@@ -37,6 +37,8 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
             builder.Property(b => b.CreatedAt).HasDefaultValue(DateTime.Now).IsRequired();
 
             builder.Property(b => b.LastUpdateAt).HasDefaultValue(DateTime.Now).IsRequired();
+
+            builder.ToTable("AspNetUsers");
         }
     }
 }

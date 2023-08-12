@@ -88,7 +88,7 @@ namespace TechBlog.NewsManager.Tests.Application.UseCases.BlogUsers
             var responseBody = _fixture.HttpContext.GetObjectFromBodyAsync<BaseResponse>(responseContext).Result;
 
             //Assert
-            responseContext.Response.StatusCode.Should().Be(expectedSuccess ? StatusCodes.Status200OK : StatusCodes.Status400BadRequest);
+            responseContext.Response.StatusCode.Should().Be(expectedSuccess ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);
 
             responseBody.Should().NotBeNull();
             responseBody.Success.Should().Be(expectedSuccess);

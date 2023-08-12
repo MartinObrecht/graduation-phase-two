@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore.Storage;
-using TechBlog.NewsManager.API.Domain.Repositories;
+using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Infrastructure.Database.Context;
 
 namespace TechBlog.NewsManager.API.Infrastructure.Database
