@@ -42,8 +42,6 @@ namespace TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy
                 throw new BusinessException("Blog new doesn't exists");
             }
 
-            blogNew.Author.WrittenNews.Clear();
-
             _logger.LogDebug("Blog new found", ("strategy", Strategy), ("body", body), ("blogNew", blogNew));
 
             return _mapper.Map<BlogNewViewModel>(blogNew);

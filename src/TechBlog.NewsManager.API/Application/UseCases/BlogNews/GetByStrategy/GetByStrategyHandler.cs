@@ -51,10 +51,10 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy
         /// <response code="400" cref="BaseResponse">Invalid information for the strategy</response>
         /// <response code="404" cref="BaseResponse">When searching a specified new but was not found</response>
         /// <returns></returns>
-        internal static async Task<IResult> Action(ILoggerManager logger,
+        public static async Task<IResult> Action(ILoggerManager logger,
                                                    IMapper mapper,
                                                    IValidator<GetByStrategyRequest> validator,
-                                                   IStrategyHub strategyHub,
+                                                   IEnumerable<IGetBlogNewsStrategy> getBlogNewsStrategies,
                                                    GetBlogNewsStrategy strategy,
                                                    Guid? id,
                                                    string name,
@@ -71,9 +71,29 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy
 
             var response = new BaseResponseWithValue<object>();
 
+            logger.LogDebug("Searching strategy", ("strategy", Enum.GetName(strategy)));
+
+            var matchedStrategies = getBlogNewsStrategies.Where(s => s.Strategy == strategy).ToList();
+
+            if (matchedStrategies.Count == 0)
+            {
+                logger.LogCritical("The strategy is not implemented", parameters: ("strategy", Enum.GetName(strategy)));
+
+                throw new NotImplementedException("The strategy is not implemented");
+            }
+
+            if (matchedStrategies.Count > 1)
+            {
+                logger.LogCritical("The strategy has more than one implementation", parameters: ("strategy", Enum.GetName(strategy)));
+
+                throw new ArgumentException("The strategy has more than one implementation");
+            }
+
+            logger.LogDebug("Strategy was found", ("strategy", Enum.GetName(strategy)));
+
             var strategyBody = mapper.Map<GetBlogNewsStrategyBody>(request);
 
-            var strategyResponse = await strategyHub.GetBlogNewsByStrategy(request.Strategy, strategyBody, cancellationToken);
+            var strategyResponse = await matchedStrategies[0].RunAsync(strategyBody, cancellationToken);
 
             logger.LogDebug("End get news", ("strategy", request.Strategy));
 
