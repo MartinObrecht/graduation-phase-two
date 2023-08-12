@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TechBlog.NewsManager.API.Application.Mapper;
 
 namespace TechBlog.NewsManager.Tests.Application.Mapper
 {
-    public class BlogUserMapperTests
+    public class StrategyMapperTests
     {
         [Fact]
         public void AutoMapper_CaseConfiguration_IsValid()
@@ -11,7 +16,7 @@ namespace TechBlog.NewsManager.Tests.Application.Mapper
             // Arrange
             var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<BlogUserMapper>();
+                cfg.AddProfile<StrategyMapper>();
             });
 
             // Act & Assert

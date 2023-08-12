@@ -48,7 +48,11 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
                                                 .Include(b => b.Author)
                                                 .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
 
-            return blogNew ?? new BlogNew { Enabled = false };
+            blogNew ??= new BlogNew { Enabled = false };
+
+            blogNew?.Author?.WrittenNews?.Clear();
+
+            return blogNew;
         }
 
         public async Task<IEnumerable<BlogNew>> GetByNameAsync(string name, CancellationToken cancellationToken = default)
@@ -58,7 +62,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
             return blogNews ?? Enumerable.Empty<BlogNew>();
         }
 
-        public async Task<IEnumerable<BlogNew>> GetByTagsDateAsync(string[] tags, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<BlogNew>> GetByTagsAsync(string[] tags, CancellationToken cancellationToken = default)
         {
             var queryBuilder = new StringBuilder($"WHERE News.[Tags] LIKE '%{tags[0]}%'");
 
