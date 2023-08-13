@@ -50,14 +50,18 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Delete
                 return Results.Forbid();
             }
 
-            await unitOfWork.BlogNew.DeleteAsync(id, cancellationToken);
-
-            if (!await unitOfWork.SaveChangesAsync(cancellationToken))
+            try
             {
-                logger.LogWarning("Error deleting blog new", ("Id", id));
+                await unitOfWork.BlogNew.DeleteAsync(id, cancellationToken);
+            }
+            catch
+            {
+                logger.LogError("An error ocurred at the database", default, ("Id", id));
 
                 throw new InfrastructureException("An unexpected error ocurred");
             }
+
+            logger.LogDebug("Blog new deleted", ("Id", id));
 
             return Results.Ok(response.AsSuccess());
         }

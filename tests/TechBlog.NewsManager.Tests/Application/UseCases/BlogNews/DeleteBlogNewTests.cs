@@ -2,6 +2,7 @@ using System.Security.Claims;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using TechBlog.NewsManager.API.Application.UseCases.BlogNews.Delete;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
@@ -53,7 +54,6 @@ namespace TechBlog.NewsManager.Tests.Application.UseCases.BlogNews
             // Assert
             result.Should().BeOfType<Ok<BaseResponse>>();
             await _unitOfWork.BlogNew.Received(1).DeleteAsync(id, _cancellationToken);
-            await _unitOfWork.Received(1).SaveChangesAsync(_cancellationToken);
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace TechBlog.NewsManager.Tests.Application.UseCases.BlogNews
             };
 
             _unitOfWork.BlogNew.GetByIdAsync(id, _cancellationToken).Returns(blogNew);
-            _unitOfWork.SaveChangesAsync(_cancellationToken).Returns(false);
+            _unitOfWork.BlogNew.DeleteAsync(id, _cancellationToken).Throws(new Exception());
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -134,9 +134,7 @@ namespace TechBlog.NewsManager.Tests.Application.UseCases.BlogNews
 
             // Assert
             await action.Should().ThrowAsync<InfrastructureException>();
-
             await _unitOfWork.BlogNew.Received(1).DeleteAsync(id, _cancellationToken);
-            await _unitOfWork.Received(1).SaveChangesAsync(_cancellationToken);
         }
     }
 }
