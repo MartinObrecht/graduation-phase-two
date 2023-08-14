@@ -33,7 +33,7 @@ namespace TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy
                 throw new BusinessException("Invalid strategy body");
             }
 
-            var blogNews = (await _unitOfWork.BlogNew.GetByTagsDateAsync(body.Tags, cancellationToken));
+            var blogNews = (await _unitOfWork.BlogNew.GetByTagsAsync(body.Tags, cancellationToken));
 
             _logger.LogDebug("End getting blognew by tags", ("strategy", Strategy), ("body", body), ("newsFoundCount", blogNews.Count()));
 

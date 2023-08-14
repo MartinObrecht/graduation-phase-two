@@ -30,7 +30,25 @@ namespace TechBlog.NewsManager.API.Application.Mapper
                 .ForMember(e => e.EmailConfirmed, mapper => mapper.MapFrom(r => true))
                 .ForMember(e => e.InternalId, mapper => mapper.Ignore());
 
-            CreateMap<BlogUserViewModel, BlogUser>().ReverseMap();
+            CreateMap<BlogUser, BlogUserViewModel>().ReverseMap()
+                .ForMember(e => e.InternalId, mapper => mapper.Ignore())
+                .ForMember(e => e.WrittenNews, mapper => mapper.Ignore())
+                .ForMember(e => e.Enabled, mapper => mapper.Ignore())
+                .ForMember(e => e.CreatedAt, mapper => mapper.Ignore())
+                .ForMember(e => e.LastUpdateAt, mapper => mapper.Ignore())
+                .ForMember(e => e.UserName, mapper => mapper.Ignore())
+                .ForMember(e => e.NormalizedUserName, mapper => mapper.Ignore())
+                .ForMember(e => e.NormalizedEmail, mapper => mapper.Ignore())
+                .ForMember(e => e.EmailConfirmed, mapper => mapper.Ignore())
+                .ForMember(e => e.PasswordHash, mapper => mapper.Ignore())
+                .ForMember(e => e.SecurityStamp, mapper => mapper.Ignore())
+                .ForMember(e => e.ConcurrencyStamp, mapper => mapper.Ignore())
+                .ForMember(e => e.PhoneNumber, mapper => mapper.Ignore())
+                .ForMember(e => e.PhoneNumberConfirmed, mapper => mapper.Ignore())
+                .ForMember(e => e.TwoFactorEnabled, mapper => mapper.Ignore())
+                .ForMember(e => e.LockoutEnd, mapper => mapper.Ignore())
+                .ForMember(e => e.LockoutEnabled, mapper => mapper.Ignore())
+                .ForMember(e => e.AccessFailedCount, mapper => mapper.Ignore());
         }
     }
 }

@@ -22,6 +22,11 @@
             Id = id;
         }
 
+        public GetBlogNewsStrategyBody(string name)
+        {
+            Name = name;
+        }
+
         public GetBlogNewsStrategyBody(string[] tags)
         {
             Tags = tags;

@@ -26,8 +26,6 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 
         private static IServiceCollection AddStrategies(this IServiceCollection services)
         {
-            services.AddScoped<IStrategyHub, StrategyHub>();
-
             services.AddScoped<IGetBlogNewsStrategy, GetByCreateDateStrategy>();
             services.AddScoped<IGetBlogNewsStrategy, GetByCreateOrUpdateDateStrategy>();
             services.AddScoped<IGetBlogNewsStrategy, GetByIdStrategy>();
