@@ -35,6 +35,8 @@ namespace TechBlog.NewsManager.API.Domain.Responses
         [Description("Invalid tags")]
         InvalidTags = 15,
         [Description("User must be a journalist")]
-        UserMustBeAJournalist = 16
+        UserMustBeAJournalist = 16,
+        [Description("Blog new not found")]
+        BlogNewNotFound = 17
     }
 }
