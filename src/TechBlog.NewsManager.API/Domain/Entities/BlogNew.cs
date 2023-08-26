@@ -23,5 +23,13 @@
         public BlogUser Author { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastUpdateAt { get; set; }
+
+        public void Update(string title, string description, string body)
+        {
+            Title = title;
+            Description = description;
+            Body = body;
+            LastUpdateAt = DateTime.UtcNow;
+        }
     }
 }
