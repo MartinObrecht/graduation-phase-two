@@ -88,6 +88,9 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             using var databaseContext = serviceScope.ServiceProvider.GetRequiredService<IDatabaseContext>();
             using var identityContext = serviceScope.ServiceProvider.GetRequiredService<IIdentityContext>();
 
+            databaseContext.TestConnectionAsync().Wait();
+            identityContext.TestConnectionAsync().Wait();
+
             if (databaseContext.AnyPendingMigrationsAsync().Result)
                 databaseContext.MigrateAsync().Wait();
 

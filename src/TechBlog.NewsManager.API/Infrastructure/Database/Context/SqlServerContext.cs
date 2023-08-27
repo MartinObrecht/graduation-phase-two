@@ -48,7 +48,15 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Context
 
         public async Task TestConnectionAsync()
         {
-            _ = await Database.ExecuteSqlRawAsync("SELECT 1");
+            try
+            {
+                _ = await Database.ExecuteSqlRawAsync("SELECT 1");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical("Invalid database connection", ex, ("context",nameof(SqlServerContext)));
+                Environment.Exit(2);
+            }
         }
 
         public async new Task<bool> SaveChangesAsync(CancellationToken cancellationToken)

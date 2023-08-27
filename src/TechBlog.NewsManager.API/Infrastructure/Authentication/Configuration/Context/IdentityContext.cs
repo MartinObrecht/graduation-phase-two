@@ -1,15 +1,20 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TechBlog.NewsManager.API.Domain.Entities;
+using TechBlog.NewsManager.API.Domain.Logger;
+using TechBlog.NewsManager.API.Infrastructure.Database.Context;
 
 namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.Context
 {
     public class IdentityContext : IdentityDbContext<BlogUser>, IIdentityContext
     {
-        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
+        private readonly ILoggerManager _logger;
+
+        public IdentityContext(DbContextOptions<IdentityContext> options, ILoggerManager logger) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
+            _logger = logger;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -43,7 +48,15 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.C
 
         public async Task TestConnectionAsync()
         {
-            _ = await Database.ExecuteSqlRawAsync("SELECT 1");
+            try
+            {
+                _ = await Database.ExecuteSqlRawAsync("SELECT 1");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical("Invalid database connection", ex, ("context", nameof(IdentityContext)));
+                Environment.Exit(2);
+            }
         }
     }
 }
