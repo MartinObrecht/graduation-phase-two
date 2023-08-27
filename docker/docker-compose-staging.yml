@@ -20,7 +20,7 @@ services:
       - backend
     build:
       context: ../
-      dockerfile: ./src/TechBlog.NewsManager.API/Dockerfile
+      dockerfile: ./src/TechBlog.NewsManager.API/Dockerfile.Staging
     container_name: graduation-phase-two-api-stg
     depends_on:
         - sqlserver
