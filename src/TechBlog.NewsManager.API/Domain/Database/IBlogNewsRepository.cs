@@ -11,5 +11,6 @@ namespace TechBlog.NewsManager.API.Domain.Database
         Task<IEnumerable<BlogNew>> GetByNameAsync(string name, CancellationToken cancellationToken = default);
         Task<IEnumerable<BlogNew>> GetByTagsAsync(string[] tags, CancellationToken cancellationToken = default);
         Task DeleteAsync(Guid Id, CancellationToken cancellationToken = default);
+        Task UpdateAsync(BlogNew blogNew, CancellationToken cancellationToken = default);
     }
 }

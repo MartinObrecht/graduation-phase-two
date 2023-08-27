@@ -110,5 +110,15 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
         {
             await _context.BlogNew.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
         }
+
+        public async Task UpdateAsync(BlogNew updatedBlogNew, CancellationToken cancellationToken = default)
+        {
+            await _context.BlogNew
+                .Where(x => x.Id == updatedBlogNew.Id)
+                .ExecuteUpdateAsync(x => x.SetProperty(s => s.Title, updatedBlogNew.Title)
+                                            .SetProperty(s => s.Body, updatedBlogNew.Body)
+                                            .SetProperty(s => s.Description, updatedBlogNew.Description)
+                                            .SetProperty(s => s.LastUpdateAt, DateTime.Now), cancellationToken);
+        }
     }
 }
