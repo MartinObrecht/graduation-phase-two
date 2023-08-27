@@ -2,7 +2,7 @@
 Post-graduation second phase project
 
 ## The project
-`TBD`
+The project is about a tech blog, with multiples endpoints and auth
 
 ## Running the project
 Follow these steps to run the project locally.
