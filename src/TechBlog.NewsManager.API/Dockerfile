@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["TechBlog.NewsManager.API/TechBlog.NewsManager.API.csproj", "src/TechBlog.NewsManager.API/"]
+COPY ["./TechBlog.NewsManager.API/TechBlog.NewsManager.API.csproj", "src/TechBlog.NewsManager.API/"]
 RUN dotnet restore "TechBlog.NewsManager.API/TechBlog.NewsManager.API.csproj"
 COPY . .
 WORKDIR "/src/TechBlog.NewsManager.API"
