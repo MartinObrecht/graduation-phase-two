@@ -20,8 +20,10 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
                                 .NotEmpty()
                                 .WithMessage(ResponseMessage.InvalidName.GetDescription());
 
-            RuleFor(c => c.Password).Cascade(CascadeMode.Continue)
+            RuleFor(c => c.Password).Cascade(CascadeMode.Stop)
                                     .NotEmpty()
+                                    .WithMessage(ResponseMessage.InvalidPassword.GetDescription())
+                                    .MinimumLength(6)
                                     .WithMessage(ResponseMessage.InvalidPassword.GetDescription());
 
             RuleFor(c => c.BlogUserType).Cascade(CascadeMode.Continue)
