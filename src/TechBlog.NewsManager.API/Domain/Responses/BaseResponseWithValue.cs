@@ -1,7 +1,10 @@
-﻿namespace TechBlog.NewsManager.API.Domain.Responses
+﻿using System.Text.Json.Serialization;
+
+namespace TechBlog.NewsManager.API.Domain.Responses
 {
     public class BaseResponseWithValue<T> : BaseResponse
     {
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public T Value { get; set; }
 
         public BaseResponseWithValue<T> AsError(T value, ResponseMessage? message = null, params string[] errors)
