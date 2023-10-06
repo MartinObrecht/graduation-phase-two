@@ -23,6 +23,14 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+    
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'graduation-phase-two'
+    organization: 'fiap-net-group'
+    scannerMode: 'MSBuild'
+    projectKey: 'fiap-net-group_graduation-phase-two'
+    projectName: 'graduation-phase-two'
 
 - task: VSBuild@1
   inputs:
@@ -31,7 +39,15 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: SonarCloudAnalyze@1
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
