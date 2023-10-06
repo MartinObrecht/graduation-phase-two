@@ -1,6 +1,7 @@
 ﻿using PoliceDepartment.EvidenceManager.API.Middlewares;
 using System.Text.Json.Serialization;
 using TechBlog.NewsManager.API.Endpoints;
+using TechBlog.NewsManager.API.Middlewares;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
@@ -20,6 +21,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
         { 
             app.UseRouting();
 
+            app.UseMiddleware<LoggingMiddleware>();
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseHttpsRedirection();

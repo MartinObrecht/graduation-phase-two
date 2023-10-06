@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using System.Text;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,37 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
     public static class InfrastructureConfiguration
     {
-        public static IServiceCollection AddInfrastructureConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureConfiguration(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
         {
-            services.AddSingleton<ILoggerManager, ConsoleLogger>();
+            services.AddLogging(configuration, isDevelopment)
+                    .AddDatabase(configuration)
+                    .AddIdentity(configuration);
 
+            return services;
+        }
+
+        private static IServiceCollection AddLogging(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
+        {
+            if (isDevelopment)
+            {
+                services.AddSingleton<ILoggerManager, ConsoleLogger>();
+                return services;
+            }
+
+            services.AddSingleton<ILoggerManager, ApplicationInsightsLogger>();
+
+            var loggingOptions = new ApplicationInsightsServiceOptions
+            {
+                ConnectionString = configuration.GetConnectionString("ApplicationInsights"),
+                EnableRequestTrackingTelemetryModule = true
+            };
+
+            services.AddApplicationInsightsTelemetry(loggingOptions);
+
+            return services;
+        }
+        private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IBlogNewsRepository, BlogNewsRepository>();
@@ -36,6 +64,10 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 
             services.AddScoped(o => new SqlConnection(configuration.GetConnectionString("SqlServerConnection")));
 
+            return services;
+        }
+        private static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddScoped<IIdentityManager, IdentityManager>();
             services.AddScoped<IIdentityContext, IdentityContext>();
             services.AddDbContext<IIdentityContext, IdentityContext>(options =>
