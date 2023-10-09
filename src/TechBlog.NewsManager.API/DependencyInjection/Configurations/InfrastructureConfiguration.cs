@@ -1,6 +1,8 @@
 ﻿using System.Data.SqlClient;
 using System.Text;
+using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -43,10 +45,18 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             var loggingOptions = new ApplicationInsightsServiceOptions
             {
                 ConnectionString = configuration.GetConnectionString("ApplicationInsights"),
-                EnableRequestTrackingTelemetryModule = true
+                EnableRequestTrackingTelemetryModule = true,
+                DeveloperMode = false
             };
 
             services.AddApplicationInsightsTelemetry(loggingOptions);
+
+            var telemetryConfiguration = new TelemetryConfiguration
+            {
+                ConnectionString = configuration.GetConnectionString("ApplicationInsights")                
+            };
+
+            services.AddSingleton(new TelemetryClient(telemetryConfiguration));
 
             return services;
         }
