@@ -30,8 +30,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy
         /// <param name="logger"></param>
         /// <param name="mapper"></param>
         /// <param name="validator"></param>
-        /// <param name="strategyHub"></param>
-        /// <param name="user"></param>
+        /// <param name="getBlogNewsStrategies"></param>
         /// <param name="strategy">The strategy that defines the business rules</param>
         /// <param name="id">The Id of the blog new (optional)</param>
         /// <param name="name">The Name of a blog new (optional)</param>

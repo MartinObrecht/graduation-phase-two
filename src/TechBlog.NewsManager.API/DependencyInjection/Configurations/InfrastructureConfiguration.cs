@@ -6,6 +6,8 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.IdentityModel.Tokens;
 using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Database;
@@ -18,6 +20,7 @@ using TechBlog.NewsManager.API.Infrastructure.Database.Context;
 using TechBlog.NewsManager.API.Infrastructure.Database.Repositories;
 using TechBlog.NewsManager.API.Infrastructure.Identity;
 using TechBlog.NewsManager.API.Infrastructure.Logger;
+using TechBlog.NewsManager.API.Infrastructure.Logger.ApplicationInsights;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
@@ -40,22 +43,29 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
                 return services;
             }
 
-            services.AddSingleton<ILoggerManager, ApplicationInsightsLogger>();
+
+            services.AddSingleton<ILoggerManager, Infrastructure.Logger.ApplicationInsights.ApplicationInsightsLogger>();
+
 
             var loggingOptions = new ApplicationInsightsServiceOptions
             {
                 ConnectionString = configuration.GetConnectionString("ApplicationInsights"),
                 EnableRequestTrackingTelemetryModule = true,
-                DeveloperMode = false
+                DeveloperMode = false,
+                AddAutoCollectedMetricExtractor = false
             };
+
+            loggingOptions.DependencyCollectionOptions.EnableLegacyCorrelationHeadersInjection = true;
+            loggingOptions.RequestCollectionOptions.TrackExceptions = true;
 
             services.AddApplicationInsightsTelemetry(loggingOptions);
 
             var telemetryConfiguration = new TelemetryConfiguration
             {
-                ConnectionString = configuration.GetConnectionString("ApplicationInsights")                
+                ConnectionString = configuration.GetConnectionString("ApplicationInsights")
             };
 
+            services.AddSingleton<ITelemetryInitializer, CloudRoleNameInitializer>();
             services.AddSingleton(new TelemetryClient(telemetryConfiguration));
 
             return services;

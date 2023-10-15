@@ -13,7 +13,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection
             app.UseAuthorization();
 
             app.UseInfrastructureConfiguration();
-
+            
             app.UseSwaggerConfiguration();
 
             return app;
