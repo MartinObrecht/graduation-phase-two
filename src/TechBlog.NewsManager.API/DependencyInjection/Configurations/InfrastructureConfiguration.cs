@@ -1,14 +1,13 @@
-﻿using System.Data.SqlClient;
-using System.Text;
-using Microsoft.ApplicationInsights;
+﻿using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.IdentityModel.Tokens;
+using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
@@ -24,6 +23,7 @@ using TechBlog.NewsManager.API.Infrastructure.Logger.ApplicationInsights;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
+    [ExcludeFromCodeCoverage]
     public static class InfrastructureConfiguration
     {
         public static IServiceCollection AddInfrastructureConfiguration(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)

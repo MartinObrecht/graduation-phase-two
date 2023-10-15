@@ -2,7 +2,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using TechBlog.NewsManager.API.Application.ViewModels;
 using TechBlog.NewsManager.API.Domain.Authentication;
 
 namespace TechBlog.NewsManager.Tests.UnitTests.Fixtures

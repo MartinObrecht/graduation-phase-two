@@ -26,9 +26,9 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Domain.Entities
         }
 
         [Theory]
-        [InlineData("","","")]
-        [InlineData(null,null,null)]
-        [InlineData("tittle","desc","body")]
+        [InlineData("", "", "")]
+        [InlineData(null, null, null)]
+        [InlineData("tittle", "desc", "body")]
         public void Update_ShouldMatchExpedted(string title, string description, string body)
         {
             //Arrange

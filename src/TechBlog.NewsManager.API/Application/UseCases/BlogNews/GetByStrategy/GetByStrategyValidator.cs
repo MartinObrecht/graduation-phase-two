@@ -6,7 +6,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy
     {
         public GetByStrategyValidator()
         {
-            
+
         }
     }
 }

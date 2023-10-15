@@ -5,7 +5,7 @@ using TechBlog.NewsManager.API.Domain.Exceptions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
 
-namespace TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy
+namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy.Strategies
 {
     public class GetByIdStrategy : IGetBlogNewsStrategy
     {

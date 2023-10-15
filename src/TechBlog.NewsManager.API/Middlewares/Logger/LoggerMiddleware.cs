@@ -1,8 +1,10 @@
 ﻿using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TechBlog.NewsManager.API.Middlewares.Logger
 {
+    [ExcludeFromCodeCoverage]
     public sealed class LoggerMiddleware
     {
         private readonly TelemetryClient _logger;

@@ -5,17 +5,17 @@ using TechBlog.NewsManager.API.Domain.Exceptions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
 
-namespace TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy
+namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy.Strategies
 {
-    public class GetByCreateDateStrategy : IGetBlogNewsStrategy
+    public class GetByNameStrategy : IGetBlogNewsStrategy
     {
         private readonly ILoggerManager _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetBlogNewsStrategy Strategy => GetBlogNewsStrategy.GET_BY_CREATE_DATE;
+        public GetBlogNewsStrategy Strategy => GetBlogNewsStrategy.GET_BY_NAME;
 
-        public GetByCreateDateStrategy(ILoggerManager logger, IUnitOfWork unitOfWork, IMapper mapper)
+        public GetByNameStrategy(ILoggerManager logger, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -24,18 +24,18 @@ namespace TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy
 
         public async Task<object> RunAsync(GetBlogNewsStrategyBody body, CancellationToken cancellationToken)
         {
-            _logger.LogDebug("Getting blognew by create date interval", ("strategy", Strategy), ("body", body));
+            _logger.LogDebug("Getting blognew by name", ("strategy", Strategy), ("body", body));
 
-            if (body is null || !body.ValidDateInterval)
+            if (body is null || !body.ValidName)
             {
                 _logger.LogInformation("Invalid body", ("strategy", Strategy), ("body", body));
 
                 throw new BusinessException("Invalid strategy body");
             }
 
-            var blogNews = await _unitOfWork.BlogNew.GetByCreatedDateAsync(body.From, body.To, cancellationToken);
+            var blogNews = await _unitOfWork.BlogNew.GetByNameAsync(body.Name, cancellationToken);
 
-            _logger.LogDebug("End getting blognew by create date interval", ("strategy", Strategy), ("body", body), ("newsFoundCount", blogNews.Count()));
+            _logger.LogDebug("End getting blognew by name", ("strategy", Strategy), ("body", body), ("newsFoundCount", blogNews.Count()));
 
             return _mapper.Map<IEnumerable<BlogNewViewModel>>(blogNews);
         }

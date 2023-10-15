@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy;
+using TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy.Strategies;
 using TechBlog.NewsManager.API.Application.ViewModels;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;

@@ -1,8 +1,8 @@
-using System.Security.Claims;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using System.Security.Claims;
 using TechBlog.NewsManager.API.Application.UseCases.BlogNews.Delete;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
@@ -82,7 +82,7 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogNews
             // Assert
             result.Should().BeOfType<ForbidHttpResult>();
 
-            await _unitOfWork.BlogNew.DidNotReceiveWithAnyArgs().DeleteAsync(default, default);
+            await _unitOfWork.BlogNew.DidNotReceiveWithAnyArgs().DeleteAsync(Guid.Empty, default);
             await _unitOfWork.DidNotReceiveWithAnyArgs().SaveChangesAsync(default);
         }
 
@@ -104,7 +104,7 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogNews
             // Assert
             result.Should().BeOfType<NotFound<BaseResponse>>();
 
-            await _unitOfWork.BlogNew.DidNotReceiveWithAnyArgs().DeleteAsync(default, default);
+            await _unitOfWork.BlogNew.DidNotReceiveWithAnyArgs().DeleteAsync(Guid.Empty, default);
             await _unitOfWork.DidNotReceiveWithAnyArgs().SaveChangesAsync(default);
         }
 

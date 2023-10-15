@@ -37,11 +37,11 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogNews
         }
 
         [Theory]
-        [InlineData(0, false, false)]
-        [InlineData(1, true, false)]
-        [InlineData(1, false, true)]
-        [InlineData(2, false, false)]
-        public void Action_AllInvalidCases_ShouldThrow(int strategiesCount, bool invalidRequest, bool strategyLogicThrows)
+        [InlineData(0, false)]
+        [InlineData(1, true)]
+        [InlineData(1, false)]
+        [InlineData(2, false)]
+        public void Action_AllInvalidCases_ShouldThrow(int strategiesCount, bool invalidRequest)
         {
             //Arrange
             _getBlogNewsStrategy.RunAsync(Arg.Any<GetBlogNewsStrategyBody>(), Arg.Any<CancellationToken>()).ThrowsAsync<BusinessException>();

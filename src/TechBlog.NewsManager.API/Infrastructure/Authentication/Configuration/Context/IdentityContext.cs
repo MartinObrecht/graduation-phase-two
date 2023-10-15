@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Logger;
-using TechBlog.NewsManager.API.Infrastructure.Database.Context;
 
 namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.Context
 {

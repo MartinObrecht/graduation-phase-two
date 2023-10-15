@@ -47,7 +47,7 @@ namespace PoliceDepartment.EvidenceManager.API.Middlewares
 
                 await HandleExceptionAsync(context, ex);
             }
-            catch(ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning("Validation error caught by middleware", ("exception", ex));
 

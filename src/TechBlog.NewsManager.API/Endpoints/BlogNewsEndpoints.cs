@@ -4,7 +4,6 @@ using TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy;
 using TechBlog.NewsManager.API.Application.UseCases.BlogNews.Update;
 using TechBlog.NewsManager.API.Application.ViewModels;
 using TechBlog.NewsManager.API.Domain.Authentication;
-using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.API.Endpoints

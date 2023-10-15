@@ -27,6 +27,6 @@
             AccessToken = accessToken;
             Expires = expires;
             UserId = userId;
-        }        
+        }
     }
 }

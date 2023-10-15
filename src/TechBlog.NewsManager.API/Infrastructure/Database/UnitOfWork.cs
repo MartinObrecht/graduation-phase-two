@@ -19,7 +19,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database
 
         public async Task BeginTransactionAsync(CancellationToken cancellationToken)
         {
-            if(_transaction != null)
+            if (_transaction != null)
                 throw new InvalidOperationException("Transaction already started");
 
             _transaction = await _context.BeginTransactionAsync(cancellationToken);
@@ -27,7 +27,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database
 
         public async Task<bool> CommitTransactionAsync(CancellationToken cancellationToken)
         {
-            if(_transaction == null)
+            if (_transaction == null)
                 throw new InvalidOperationException("Transaction not started");
 
             var response = await _context.CommitTransactionAsync(_transaction, cancellationToken);

@@ -1,20 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create;
-using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Extensions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
-using TechBlog.NewsManager.API.Domain.Strategies;
 using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
-using TechBlog.NewsManager.API.Infrastructure.Database;
 
 namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy
 {

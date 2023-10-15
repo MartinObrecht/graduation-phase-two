@@ -1,9 +1,11 @@
 ﻿using Microsoft.ApplicationInsights.DataContracts;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace TechBlog.NewsManager.API.Middlewares.Logger
 {
+    [ExcludeFromCodeCoverage]
     public sealed class LogRequestMiddleware
     {
         private readonly bool _logRequestBody;
@@ -50,7 +52,7 @@ namespace TechBlog.NewsManager.API.Middlewares.Logger
                 }
             }
 
-            if(_logRequestHeaders)
+            if (_logRequestHeaders)
             {
                 var requestHeaders = JsonConvert.SerializeObject(context.Request.Headers);
 

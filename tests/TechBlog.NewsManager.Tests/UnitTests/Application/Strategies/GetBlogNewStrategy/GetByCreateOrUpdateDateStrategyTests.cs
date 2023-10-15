@@ -2,7 +2,7 @@
 using FluentAssertions;
 using NSubstitute;
 using System.Globalization;
-using TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy;
+using TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy.Strategies;
 using TechBlog.NewsManager.API.Application.ViewModels;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using TechBlog.NewsManager.API.Domain.Exceptions;
 
 namespace TechBlog.NewsManager.API.Domain.Extensions
 {

@@ -1,8 +1,10 @@
 ﻿using Microsoft.ApplicationInsights.DataContracts;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TechBlog.NewsManager.API.Middlewares.Logger
 {
+    [ExcludeFromCodeCoverage]
     public sealed class LogResponseMiddleware
     {
         private readonly bool _logResponseBody;
@@ -18,7 +20,7 @@ namespace TechBlog.NewsManager.API.Middlewares.Logger
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if(!_logResponseBody && !_logResponseHeaders)
+            if (!_logResponseBody && !_logResponseHeaders)
             {
                 await _next(context);
                 return;
@@ -43,12 +45,12 @@ namespace TechBlog.NewsManager.API.Middlewares.Logger
 
                     memoryStream.Position = 0;
                     await memoryStream.CopyToAsync(originalBodyStream);
-                    
+
                     requestTelemetry?.Properties.Add("ResponseBody", responseBody);
                     requestTelemetry?.Properties.Add("ResponseBodySize", responseBody.Length.ToString());
                 }
-                
-                if(_logResponseHeaders)
+
+                if (_logResponseHeaders)
                 {
                     var responseHeaders = JsonConvert.SerializeObject(context.Response.Headers);
 

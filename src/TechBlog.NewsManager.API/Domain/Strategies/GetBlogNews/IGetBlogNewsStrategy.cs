@@ -1,6 +1,4 @@
-﻿using TechBlog.NewsManager.API.Application.ViewModels;
-
-namespace TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews
+﻿namespace TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews
 {
     public interface IGetBlogNewsStrategy
     {

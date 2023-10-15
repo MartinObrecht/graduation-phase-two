@@ -5,7 +5,7 @@ using TechBlog.NewsManager.API.Domain.Exceptions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
 
-namespace TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy
+namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy.Strategies
 {
     public class GetByTagStrategy : IGetBlogNewsStrategy
     {
@@ -33,7 +33,7 @@ namespace TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy
                 throw new BusinessException("Invalid strategy body");
             }
 
-            var blogNews = (await _unitOfWork.BlogNew.GetByTagsAsync(body.Tags, cancellationToken));
+            var blogNews = await _unitOfWork.BlogNew.GetByTagsAsync(body.Tags, cancellationToken);
 
             _logger.LogDebug("End getting blognew by tags", ("strategy", Strategy), ("body", body), ("newsFoundCount", blogNews.Count()));
 

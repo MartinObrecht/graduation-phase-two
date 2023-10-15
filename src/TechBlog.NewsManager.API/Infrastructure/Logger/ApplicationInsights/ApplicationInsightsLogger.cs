@@ -1,8 +1,5 @@
 ﻿using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Abstractions;
 using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 using TechBlog.NewsManager.API.Domain.Logger;
@@ -190,26 +187,6 @@ namespace TechBlog.NewsManager.API.Infrastructure.Logger.ApplicationInsights
                 LoggerManagerSeverity.CRITICAL => SeverityLevel.Critical,
                 _ => SeverityLevel.Verbose,
             };
-        }
-
-        private static Dictionary<string, string> AsDictionary((string name, object value)[] parameters)
-        {
-            var response = new Dictionary<string, string>(parameters.Length);
-
-            for (int i = 0; i < parameters.Length; i++)
-                response.Add(parameters[i].name, JsonConvert.SerializeObject(parameters[i].value));
-
-            return response;
-        }
-
-        private static Dictionary<string, string> AsDictionary((string name, string value)[] parameters)
-        {
-            var response = new Dictionary<string, string>(parameters.Length);
-
-            for (int i = 0; i < parameters.Length; i++)
-                response.Add(parameters[i].name, parameters[i].value);
-
-            return response;
         }
     }
 }
