@@ -79,8 +79,8 @@ namespace TechBlog.NewsManager.Tests.Application.StepDefinitions
         }
 
 
-        [Then(@"I should get a response with status code (.*)")]
-        public void ThenIShouldGetAResponseWithStatusCode(int p0)
+        [Then(@"I should get a response to create a new user with status code (.*)")]
+        public void ThenIShouldGetAResponseToCreateANewUserWithStatusCode(int p0)
         {
             Assert.Equal(p0,(int)_httpContext.Response.StatusCode);
         }
@@ -100,8 +100,8 @@ namespace TechBlog.NewsManager.Tests.Application.StepDefinitions
             _baseResponse.Success.Should().Be(bool.Parse(@true));
         }
 
-        [Then(@"I should get a validade error with message ""([^""]*)""")]
-        public void ThenIShouldGetAValidadeErrorWithMessage(string p0)
+        [Then(@"I should get a validate error to create a new user with this message ""([^""]*)""")]
+        public void ThenIShouldGetAValidateErrorToCreateANewUserWithThisMessage(string p0)
         {
             Assert.Equal(p0, _validationResult.Errors.First().ErrorMessage);
         }
