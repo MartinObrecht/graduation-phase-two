@@ -2,14 +2,13 @@
 {
     public sealed class ApiKeyMiddleware
     {
-        private readonly RequestDelegate _next;
         private readonly string _apiKey;
+        private readonly RequestDelegate _next;
 
-        public ApiKeyMiddleware(RequestDelegate next,
-                                IConfiguration configuration)
+        public ApiKeyMiddleware(IConfiguration configuration, RequestDelegate next)
         {
-            _next = next;
             _apiKey = configuration["ApiKey"];
+            _next = next;
         }
 
         public async Task InvokeAsync(HttpContext context)

@@ -6,7 +6,7 @@ using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Delete
 {
-    public class DeleteBlogNewHandler
+    public static class DeleteBlogNewHandler
     {
         public static string Route => "/api/v1/blognew/{id:guid}";
 

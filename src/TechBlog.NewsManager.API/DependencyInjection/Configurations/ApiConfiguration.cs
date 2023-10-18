@@ -1,9 +1,12 @@
 ﻿using PoliceDepartment.EvidenceManager.API.Middlewares;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using TechBlog.NewsManager.API.Endpoints;
+using TechBlog.NewsManager.API.Middlewares.Logger;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
+    [ExcludeFromCodeCoverage]
     public static class ApiConfiguration
     {
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services)
@@ -16,9 +19,13 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             return services;
         }
 
-        public static IApplicationBuilder UseApiConfiguration(this WebApplication app, bool isDevelopment) 
-        { 
+        public static IApplicationBuilder UseApiConfiguration(this WebApplication app, bool isDevelopment)
+        {
             app.UseRouting();
+
+            app.UseMiddlewareIfNotDevelopment<LoggerMiddleware>(isDevelopment);
+            app.UseMiddlewareIfNotDevelopment<LogRequestMiddleware>(isDevelopment);
+            app.UseMiddlewareIfNotDevelopment<LogResponseMiddleware>(isDevelopment);
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
@@ -28,10 +35,15 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             app.MapBlogNewsEndpoints();
             app.MapAuthenticationEndpoints();
 
+            app.UseMiddlewareIfNotDevelopment<ApiKeyMiddleware>(isDevelopment);
+
+            return app;
+        }
+
+        private static IApplicationBuilder UseMiddlewareIfNotDevelopment<T>(this WebApplication app, bool isDevelopment)
+        {
             if (!isDevelopment)
-            {
-                app.UseMiddleware<ApiKeyMiddleware>();
-            }
+                app.UseMiddleware<T>();
 
             return app;
         }

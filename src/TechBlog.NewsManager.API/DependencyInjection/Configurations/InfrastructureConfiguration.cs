@@ -1,9 +1,13 @@
-﻿using System.Data.SqlClient;
-using System.Text;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
@@ -15,15 +19,59 @@ using TechBlog.NewsManager.API.Infrastructure.Database.Context;
 using TechBlog.NewsManager.API.Infrastructure.Database.Repositories;
 using TechBlog.NewsManager.API.Infrastructure.Identity;
 using TechBlog.NewsManager.API.Infrastructure.Logger;
+using TechBlog.NewsManager.API.Infrastructure.Logger.ApplicationInsights;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
+    [ExcludeFromCodeCoverage]
     public static class InfrastructureConfiguration
     {
-        public static IServiceCollection AddInfrastructureConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureConfiguration(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
         {
-            services.AddSingleton<ILoggerManager, ConsoleLogger>();
+            services.AddLogging(configuration, isDevelopment)
+                    .AddDatabase(configuration)
+                    .AddIdentity(configuration);
 
+            return services;
+        }
+
+        private static IServiceCollection AddLogging(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
+        {
+            if (isDevelopment)
+            {
+                services.AddSingleton<ILoggerManager, ConsoleLogger>();
+                return services;
+            }
+
+
+            services.AddSingleton<ILoggerManager, Infrastructure.Logger.ApplicationInsights.ApplicationInsightsLogger>();
+
+
+            var loggingOptions = new ApplicationInsightsServiceOptions
+            {
+                ConnectionString = configuration.GetConnectionString("ApplicationInsights"),
+                EnableRequestTrackingTelemetryModule = true,
+                DeveloperMode = false,
+                AddAutoCollectedMetricExtractor = false
+            };
+
+            loggingOptions.DependencyCollectionOptions.EnableLegacyCorrelationHeadersInjection = true;
+            loggingOptions.RequestCollectionOptions.TrackExceptions = true;
+
+            services.AddApplicationInsightsTelemetry(loggingOptions);
+
+            var telemetryConfiguration = new TelemetryConfiguration
+            {
+                ConnectionString = configuration.GetConnectionString("ApplicationInsights")
+            };
+
+            services.AddSingleton<ITelemetryInitializer, CloudRoleNameInitializer>();
+            services.AddSingleton(new TelemetryClient(telemetryConfiguration));
+
+            return services;
+        }
+        private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IBlogNewsRepository, BlogNewsRepository>();
@@ -36,6 +84,10 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 
             services.AddScoped(o => new SqlConnection(configuration.GetConnectionString("SqlServerConnection")));
 
+            return services;
+        }
+        private static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddScoped<IIdentityManager, IdentityManager>();
             services.AddScoped<IIdentityContext, IdentityContext>();
             services.AddDbContext<IIdentityContext, IdentityContext>(options =>

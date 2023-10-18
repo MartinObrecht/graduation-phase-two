@@ -1,10 +1,10 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
+using System.Text;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Infrastructure.Database.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
 {
@@ -50,7 +50,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
 
             blogNew ??= new BlogNew { Enabled = false };
 
-            blogNew?.Author?.WrittenNews?.Clear();
+            blogNew.Author?.WrittenNews?.Clear();
 
             return blogNew;
         }
@@ -111,13 +111,13 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
             await _context.BlogNew.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(BlogNew updatedBlogNew, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(BlogNew blogNew, CancellationToken cancellationToken = default)
         {
             await _context.BlogNew
-                .Where(x => x.Id == updatedBlogNew.Id)
-                .ExecuteUpdateAsync(x => x.SetProperty(s => s.Title, updatedBlogNew.Title)
-                                            .SetProperty(s => s.Body, updatedBlogNew.Body)
-                                            .SetProperty(s => s.Description, updatedBlogNew.Description)
+                .Where(x => x.Id == blogNew.Id)
+                .ExecuteUpdateAsync(x => x.SetProperty(s => s.Title, blogNew.Title)
+                                            .SetProperty(s => s.Body, blogNew.Body)
+                                            .SetProperty(s => s.Description, blogNew.Description)
                                             .SetProperty(s => s.LastUpdateAt, DateTime.Now), cancellationToken);
         }
     }
