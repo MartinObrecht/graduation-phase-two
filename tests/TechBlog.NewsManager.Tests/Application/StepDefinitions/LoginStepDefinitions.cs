@@ -1,11 +1,15 @@
 using AutoMapper;
+using Azure;
+using Azure.Core;
 using FluentAssertions;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
+using System.ComponentModel.DataAnnotations;
 using TechBlog.NewsManager.API.Application.UseCases.Authentication.Login;
 using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Entities;
+using TechBlog.NewsManager.API.Domain.Extensions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
 using TechBlog.NewsManager.Tests.Fixtures;
@@ -35,6 +39,7 @@ namespace TechBlog.NewsManager.Tests.Application.StepDefinitions
 
             _logger = Substitute.For<ILoggerManager>();
             _validator = Substitute.For<IValidator<LoginRequest>>();
+            
             _identityManager = Substitute.For<IIdentityManager>();
         }
 
@@ -67,8 +72,8 @@ namespace TechBlog.NewsManager.Tests.Application.StepDefinitions
             _baseResponse = _fixture.HttpContext.GetObjectFromBodyAsync<BaseResponseWithValue<AccessTokenModel>>(_httpContext).Result;
         }
 
-        [Then(@"I wish return with sucess ""([^""]*)"" and status code ""([^""]*)""")]
-        public void ThenIWishReturnWithSucessAndStatusCode(string @true, string p1)
+        [Then(@"I wish return with success ""([^""]*)"" and status code ""([^""]*)""")]
+        public void ThenIWishReturnWithSuccessAndStatusCode(string @true, string p1)
         {
             _httpContext.Response.StatusCode.Should().Be(Boolean.Parse(@true) ? int.Parse(p1) : int.Parse(p1));
 
@@ -77,6 +82,23 @@ namespace TechBlog.NewsManager.Tests.Application.StepDefinitions
             if (Boolean.Parse(@true))
                 _baseResponse.Value.Valid.Should().BeTrue();
         }
+
+        [When(@"I validate that user")]
+        public void WhenIValidateThatUser()
+        {
+            var loginValidator = new LoginValidator();
+            _validationResult = loginValidator.Validate(_loginRequest);
+        }
+
+        [Then(@"I wish the validator response with success ""([^""]*)"" and message error is ""([^""]*)""")]
+        public void ThenIWishTheValidatorResponseWithSuccessAndMessageErrorIs(string @false, string p1)
+        {
+            _validationResult.IsValid.Should().Be(Boolean.Parse(@false));
+
+            foreach (var error in _validationResult.Errors.Select(e => e.ErrorMessage))
+                p1.Should().Contain(error);
+        }
+
 
     }
 }
