@@ -1,23 +1,16 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using FluentAssertions;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create;
-using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
 using TechBlog.NewsManager.API.Domain.ValueObjects;
-using TechBlog.NewsManager.Tests.Fixtures;
+using TechBlog.NewsManager.Tests.UnitTests.Fixtures;
 using TechTalk.SpecFlow;
 using ValidationResultFluent = FluentValidation.Results.ValidationResult;
 

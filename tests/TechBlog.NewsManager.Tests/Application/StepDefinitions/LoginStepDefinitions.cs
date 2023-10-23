@@ -1,18 +1,13 @@
-using AutoMapper;
-using Azure;
-using Azure.Core;
 using FluentAssertions;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
-using System.ComponentModel.DataAnnotations;
 using TechBlog.NewsManager.API.Application.UseCases.Authentication.Login;
 using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Entities;
-using TechBlog.NewsManager.API.Domain.Extensions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
-using TechBlog.NewsManager.Tests.Fixtures;
+using TechBlog.NewsManager.Tests.UnitTests.Fixtures;
 using TechTalk.SpecFlow;
 using ValidationResultFluent = FluentValidation.Results.ValidationResult;
 

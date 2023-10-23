@@ -9,7 +9,7 @@ using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
 using TechBlog.NewsManager.API.Domain.ValueObjects;
-using TechBlog.NewsManager.Tests.Fixtures;
+using TechBlog.NewsManager.Tests.UnitTests.Fixtures;
 using TechTalk.SpecFlow;
 using ValidationResultFluent = FluentValidation.Results.ValidationResult;
 
