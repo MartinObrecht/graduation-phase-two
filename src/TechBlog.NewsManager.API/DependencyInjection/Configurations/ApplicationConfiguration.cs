@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
+using System.Diagnostics.CodeAnalysis;
 using TechBlog.NewsManager.API.Application.Mapper;
-using TechBlog.NewsManager.API.Application.Strategies;
-using TechBlog.NewsManager.API.Application.Strategies.GetBlogNewStrategy;
 using TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create;
+using TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy.Strategies;
 using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
-using TechBlog.NewsManager.API.Domain.Strategies;
 using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
+    [ExcludeFromCodeCoverage]
     public static class ApplicationConfiguration
     {
         public static IServiceCollection AddApplicationConfiguration(this IServiceCollection services)

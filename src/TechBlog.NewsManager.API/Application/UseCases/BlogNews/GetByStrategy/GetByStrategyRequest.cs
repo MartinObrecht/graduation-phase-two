@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
+﻿using TechBlog.NewsManager.API.Domain.Strategies.GetBlogNews;
 
 namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy
 {
@@ -12,11 +11,11 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
 
-        public GetByStrategyRequest(GetBlogNewsStrategy strategy, 
-                                    Guid? id, 
-                                    string name, 
-                                    string[] tags, 
-                                    DateTime? from, 
+        public GetByStrategyRequest(GetBlogNewsStrategy strategy,
+                                    Guid? id,
+                                    string name,
+                                    string[] tags,
+                                    DateTime? from,
                                     DateTime? to)
         {
             Strategy = strategy;

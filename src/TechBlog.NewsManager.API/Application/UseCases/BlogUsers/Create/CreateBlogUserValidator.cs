@@ -12,7 +12,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
             RuleFor(c => c.Email).Cascade(CascadeMode.Continue)
                                  .Custom((email, context) =>
                                  {
-                                     if(string.IsNullOrWhiteSpace(email) || !MailAddress.TryCreate(email, out _))
+                                     if (string.IsNullOrWhiteSpace(email) || !MailAddress.TryCreate(email, out _))
                                          context.AddFailure(ResponseMessage.InvalidEmail.GetDescription());
                                  });
 

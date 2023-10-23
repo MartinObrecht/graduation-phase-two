@@ -7,6 +7,7 @@ using System.Text;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 {
+    [ExcludeFromCodeCoverage]
     public static class SwaggerConfiguration
     {
         internal static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
@@ -33,8 +34,8 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
         {
             var builder = new StringBuilder(currentClass.Name.Replace("ViewModel", string.Empty).Replace("Model", string.Empty));
 
-            for (int i = 0; i < currentClass.GenericTypeArguments.Length; i++)            
-                builder.Append(currentClass.GenericTypeArguments[0].Name);            
+            for (int i = 0; i < currentClass.GenericTypeArguments.Length; i++)
+                builder.Append(currentClass.GenericTypeArguments[0].Name);
 
             return builder.ToString();
         }
@@ -98,7 +99,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             return app;
         }
     }
-
+    [ExcludeFromCodeCoverage]
     internal sealed class SwaggerDefaultValues : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
@@ -200,7 +201,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             return info;
         }
     }
-
+    [ExcludeFromCodeCoverage]
     internal class ApiKeyHeaderParameter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)

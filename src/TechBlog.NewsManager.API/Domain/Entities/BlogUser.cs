@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using TechBlog.NewsManager.API.Domain.ValueObjects;
+﻿using TechBlog.NewsManager.API.Domain.ValueObjects;
 
 namespace TechBlog.NewsManager.API.Domain.Entities
 {
@@ -30,7 +29,7 @@ namespace TechBlog.NewsManager.API.Domain.Entities
 
         public BlogUser WithInternalIdMapped()
         {
-            if(Guid.TryParse(Id, out var internalId))
+            if (Guid.TryParse(Id, out var internalId))
                 InternalId = internalId;
 
             return this;

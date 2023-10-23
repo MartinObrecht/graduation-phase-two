@@ -1,5 +1,4 @@
 ﻿using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
-using TechBlog.NewsManager.API.Application.ViewModels;
 using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Responses;
 

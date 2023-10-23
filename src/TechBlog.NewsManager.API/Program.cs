@@ -10,7 +10,7 @@ builder.Configuration
 
 var isDevelopment = builder.Environment.IsDevelopment();
 
-builder.Services.AddDependencyInjection(builder.Configuration);
+builder.Services.AddDependencyInjection(builder.Configuration, isDevelopment);
 
 var app = builder.Build();
 

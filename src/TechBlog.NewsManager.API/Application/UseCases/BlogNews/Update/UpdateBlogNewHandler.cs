@@ -7,10 +7,10 @@ using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Update
 {
-    public class UpdateBlogNewHandler
+    public static class UpdateBlogNewHandler
     {
         public static string Route => "/api/v1/blognew/{id:guid}";
-        public static string[] Methods => new string[] { HttpMethod.Put.ToString() };   
+        public static string[] Methods => new string[] { HttpMethod.Put.ToString() };
 
         public static Delegate Handle => Action;
 
@@ -30,7 +30,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Update
         /// <returns>The result of the update blog new action.</returns>
         /// <exception cref="InfrastructureException">An unexpected error ocurred</exception>
         /// <exception cref="ValidationException">When the request is invalid</exception>
-        
+
         public static async Task<IResult> Action(ILoggerManager logger,
                                                     IUnitOfWork unitOfWork,
                                                     ClaimsPrincipal user,

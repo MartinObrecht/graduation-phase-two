@@ -1,6 +1,6 @@
-using System.Security.Claims;
 using AutoMapper;
 using FluentValidation;
+using System.Security.Claims;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Exceptions;

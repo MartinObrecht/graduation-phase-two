@@ -2,10 +2,10 @@
 {
     public enum LoggerManagerSeverity
     {
-        DEBUG = 0,
-        INFORMATION = 1,
-        WARNING = 2,
-        ERROR = 3,
-        CRITICAL = 4,
+        DEBUG = LogLevel.Debug,
+        INFORMATION = LogLevel.Information,
+        WARNING = LogLevel.Warning,
+        ERROR = LogLevel.Error,
+        CRITICAL = LogLevel.Critical,
     }
 }
