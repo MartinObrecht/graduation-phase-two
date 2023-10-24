@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace TechBlog.NewsManager.Tests.Application.Features.BlogUsers
+namespace TechBlog.NewsManager.Tests.AcceptanceTests.Aplication.BlogNews
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace TechBlog.NewsManager.Tests.Application.Features.BlogUsers
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class CreateUserFeature : object, Xunit.IClassFixture<CreateUserFeature.FixtureData>, System.IDisposable
+    public partial class CreateBlogNewsFeature : object, Xunit.IClassFixture<CreateBlogNewsFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace TechBlog.NewsManager.Tests.Application.Features.BlogUsers
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "CreateUser.feature"
+#line 1 "CreateBlogNews.feature"
 #line hidden
         
-        public CreateUserFeature(CreateUserFeature.FixtureData fixtureData, TechBlog_NewsManager_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CreateBlogNewsFeature(CreateBlogNewsFeature.FixtureData fixtureData, TechBlog_NewsManager_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace TechBlog.NewsManager.Tests.Application.Features.BlogUsers
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Application/Features/BlogUsers", "CreateUser", "the feature to create a new user", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AcceptanceTests/Aplication/BlogNews", "CreateBlogNews", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,14 +81,16 @@ namespace TechBlog.NewsManager.Tests.Application.Features.BlogUsers
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="With_Success")]
-        [Xunit.TraitAttribute("FeatureTitle", "CreateUser")]
+        [Xunit.TraitAttribute("FeatureTitle", "CreateBlogNews")]
         [Xunit.TraitAttribute("Description", "With_Success")]
+        [Xunit.TraitAttribute("Category", "tag1")]
         public void With_Success()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "tag1"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("With_Success", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 5
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,36 +100,44 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
- testRunner.Given("I wanted to create a new user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 7
- testRunner.And("with email \"alan.martins@gmail.com\" and password \"Str0ngPsword12!\" and name \"Alan" +
-                        " Martins\" and blogUserType \"READER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I wanted to create a blog news as \"JOURNALIST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
- testRunner.When("I send a request to create a new user that exists is \"false\" and success to creat" +
-                        "e is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("with title \"title\" and description \"description\" and body \"body\" and enabled \"tru" +
+                        "e\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "name"});
+                table1.AddRow(new string[] {
+                            "test"});
+                table1.AddRow(new string[] {
+                            "tag"});
 #line 9
- testRunner.Then("I should get a response to create a new user with status code 201", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("tags:", ((string)(null)), table1, "And ");
 #line hidden
-#line 10
- testRunner.And("result success is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
+ testRunner.When("I send a request to create a blog news", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 14
+ testRunner.Then("I should get a response to create create a blog news with status code 201", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 15
+ testRunner.And("result success to create a blog news is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="With_Error_Invalid_Password")]
-        [Xunit.TraitAttribute("FeatureTitle", "CreateUser")]
-        [Xunit.TraitAttribute("Description", "With_Error_Invalid_Password")]
-        public void With_Error_Invalid_Password()
+        [Xunit.SkippableFactAttribute(DisplayName="With_Error_Is_Not_Journalist")]
+        [Xunit.TraitAttribute("FeatureTitle", "CreateBlogNews")]
+        [Xunit.TraitAttribute("Description", "With_Error_Is_Not_Journalist")]
+        public void With_Error_Is_Not_Journalist()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("With_Error_Invalid_Password", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 12
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("With_Error_Is_Not_Journalist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -137,19 +147,33 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
- testRunner.Given("I wanted to create a new user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 19
+ testRunner.Given("I wanted to create a blog news as \"READER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 14
- testRunner.And("with email \"alan.martins@gmail.com\" and password \"123\" and name \"Alan Martins\" an" +
-                        "d blogUserType \"READER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+ testRunner.And("with title \"title\" and description \"description\" and body \"body\" and enabled \"tru" +
+                        "e\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
- testRunner.When("I validate request to create a new user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                            "name"});
+                table2.AddRow(new string[] {
+                            "test"});
+                table2.AddRow(new string[] {
+                            "tag"});
+#line 21
+ testRunner.And("tags:", ((string)(null)), table2, "And ");
 #line hidden
-#line 16
- testRunner.Then("I should get a validate error to create a new user with this message \"Invalid pas" +
-                        "sword\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 25
+ testRunner.When("I send a request to create a blog news", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 26
+ testRunner.Then("I should get a response to create create a blog news with status code 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 27
+ testRunner.And("result success to create a blog news is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 28
+ testRunner.And("message to create a blog news is \"User must be a journalist\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -162,12 +186,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                CreateUserFeature.FeatureSetup();
+                CreateBlogNewsFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                CreateUserFeature.FeatureTearDown();
+                CreateBlogNewsFeature.FeatureTearDown();
             }
         }
     }

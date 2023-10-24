@@ -7,11 +7,11 @@ using TechBlog.NewsManager.API.Domain.Authentication;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
-using TechBlog.NewsManager.Tests.UnitTests.Fixtures;
+using TechBlog.NewsManager.Tests.AcceptanceTests.Fixtures;
 using TechTalk.SpecFlow;
 using ValidationResultFluent = FluentValidation.Results.ValidationResult;
 
-namespace TechBlog.NewsManager.Tests.Application.StepDefinitions
+namespace TechBlog.NewsManager.AcceptanceTests.Domain.StepDefinitions
 {
     [Binding]
     public class LoginStepDefinitions
