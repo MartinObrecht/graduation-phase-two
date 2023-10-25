@@ -34,4 +34,8 @@
     <ProjectReference Include="..\..\src\TechBlog.NewsManager.API\TechBlog.NewsManager.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UnitTests\Domain\Exceptions\" />
+  </ItemGroup>
+
 </Project>

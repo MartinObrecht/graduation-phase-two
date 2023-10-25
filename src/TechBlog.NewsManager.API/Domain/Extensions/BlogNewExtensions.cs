@@ -14,7 +14,7 @@ namespace TechBlog.NewsManager.API.Domain.Extensions
         {
             result = default;
 
-            if (!blogNew.Enabled)
+            if (blogNew.Enabled)
                 return blogNew.Enabled;
 
             logger.Log("Blog new not found", LoggerManagerSeverity.DEBUG, ("Id", blogNew.Id));
@@ -28,14 +28,14 @@ namespace TechBlog.NewsManager.API.Domain.Extensions
         {
             result = default;
 
-            if (blogNew.AuthorId != user.FindFirstValue(ClaimTypes.NameIdentifier))
-                return blogNew.Enabled;
+            if (blogNew.AuthorId == user.FindFirstValue(ClaimTypes.NameIdentifier))
+                return true;
 
             logger.Log("User not allowed to action", LoggerManagerSeverity.INFORMATION, ("Id", blogNew.Id), ("UserId", user.FindFirstValue(ClaimTypes.NameIdentifier)), ("BlogNewAuthorId", blogNew.AuthorId));
 
             result = Results.Forbid();
 
-            return blogNew.Enabled;
+            return false;
         }
     }
 }
