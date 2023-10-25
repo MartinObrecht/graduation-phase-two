@@ -57,7 +57,7 @@ steps:
   inputs:
     command: "test"
     projects: "**/*.sln"
-    arguments: "--configuration Release --no-build --collect:"XPlat Code Coverage" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
+    arguments: "--configuration Release --no-build --collect:'XPlat Code Coverage' /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
 
 - task: PublishTestResults@2
   displayName: "Publish Code Coverage"
