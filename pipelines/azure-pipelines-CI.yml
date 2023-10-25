@@ -4,31 +4,31 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- "*"
+- '*'
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: "wget -qO- https://raw.githubusercontent.com/artifacts-credprovider/master/helpers/installcredprovider.sh  | bash"
-  displayName: "Install NuGet Tool"
+- script: 'wget -qO- https://raw.githubusercontent.com/artifacts-credprovider/master/helpers/installcredprovider.sh  | bash'
+  displayName: 'Install NuGet Tool'
 
-- script: "dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.5.8"
-  displayName: "Install Report Tool"
+- script: 'dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.5.8'
+  displayName: 'Install Report Tool'
 
 - task: UseDotNet@2
-  displayName: "Install .NET 7"
+  displayName: 'Install .NET 7'
   inputs:
     packageType: 'sdk'
     version: 7.0.x
 
 - task: DotNetCoreCLI@2
-  displayName: "Restore NuGet Packages"
+  displayName: 'Restore NuGet Packages'
   inputs:
-    command: "restore"
-    feedsToUse: "select"
-    projects: "**/*.sln"
-    verbosityRestore: "Minimal"
+    command: 'restore'
+    feedsToUse: 'select'
+    projects: '**/*.sln'
+    verbosityRestore: 'Minimal'
 
 - task: SonarCloudPrepare@1
   displayName: 'Prepare analysis on SonarCloud'
@@ -46,24 +46,24 @@ steps:
       sonar.exclusions=**/*Program.cs,**/*appsettings.json,**/*Dockerfile
 
 - task: DotNetCoreCLI@2
-  displayName: "Build Solution"
+  displayName: 'Build Solution'
   inputs:
-    command: "build"
-    projects: "**/*.sln"
-    arguments: "--no-restore --configuration Release"
+    command: 'build'
+    projects: '**/*.sln'
+    arguments: '--no-restore --configuration Release'
 
 - task: DotNetCoreCLI@2
-  displayName: "Run Tests"
+  displayName: 'Run Tests'
   inputs:
-    command: "test"
-    projects: "**/*.sln"
-    arguments: "--configuration Release --no-build --collect:'XPlat Code Coverage' /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
+    command: 'test'
+    projects: '**/*.sln'
+    arguments: '--configuration Release --no-build --collect:"XPlat Code Coverage" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover'
 
 - task: PublishTestResults@2
-  displayName: "Publish Code Coverage"
+  displayName: 'Publish Code Coverage'
   inputs:
-    testRunner: "VSTest"
-    testResultsFiles: "$(Agent.TempDirectory)/**.*trx"
+    testRunner: 'VSTest'
+    testResultsFiles: '$(Agent.TempDirectory)/**.*trx'
     mergeTestResults: true 
 
 - task: SonarCloudAnalyze@1
