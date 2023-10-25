@@ -70,7 +70,7 @@ namespace TechBlog.NewsManager.AcceptanceTests.Domain.StepDefinitions
         [Then(@"I wish return with success ""([^""]*)"" and status code ""([^""]*)""")]
         public void ThenIWishReturnWithSuccessAndStatusCode(string @true, string p1)
         {
-            _httpContext.Response.StatusCode.Should().Be(Boolean.Parse(@true) ? int.Parse(p1) : int.Parse(p1));
+            _httpContext.Response.StatusCode.Should().Be(int.Parse(p1));
 
             _baseResponse.Should().NotBeNull();
             _baseResponse.Success.Should().Be(Boolean.Parse(@true));
