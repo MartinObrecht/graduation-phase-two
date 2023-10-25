@@ -18,7 +18,16 @@ steps:
 - checkout: self
   fetchDepth: 0
 
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(solution)'  
+
 - task: SonarCloudPrepare@1
+  displayName: 'Prepare analysis on SonarCloud'
   inputs:
     SonarCloud: 'SonarCloud'
     organization: 'fiap-net-group'
@@ -26,13 +35,8 @@ steps:
     projectKey: 'fiap-net-group_graduation-phase-two'
     projectName: 'graduation-phase-two'
 
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'  
-
 - task: VSBuild@1
+  displayName: 'Build the solution'
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
@@ -40,14 +44,21 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
+  displayName: 'Test the solution'
   inputs:
+    testAssemblyVer2: |
+      **\$(BuildConfiguration)\*Test*.dll
+      !**\obj\**
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    codeCoverageEnabled: true
 
 - task: SonarCloudAnalyze@1
+  displayName: 'Run Code Analysis'
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
 
 - task: SonarCloudPublish@1
+  displayName: 'Publish Analysis Result'
   inputs:
     pollingTimeoutSec: '300'
