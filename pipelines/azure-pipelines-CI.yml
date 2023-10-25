@@ -4,34 +4,74 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- "*"
+- '*'
 
 pool:
-  vmImage: 'windows-latest'
-
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  vmImage: 'ubuntu-latest'
 
 steps:
-- checkout: self
-  fetchDepth: 0
+- script: 'wget -qO- https://raw.githubusercontent.com/artifacts-credprovider/master/helpers/installcredprovider.sh  | bash'
+  displayName: 'Install NuGet Tool'
 
-- task: NuGetToolInstaller@1
+- script: 'dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.5.8'
+  displayName: 'Install Report Tool'
 
-- task: NuGetCommand@2
+- task: UseDotNet@2
+  displayName: 'Install .NET 7'
   inputs:
-    restoreSolution: '$(solution)'
+    packageType: 'sdk'
+    version: 7.0.x
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
+  displayName: 'Restore NuGet Packages'
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'restore'
+    feedsToUse: 'select'
+    projects: '**/*.sln'
+    verbosityRestore: 'Minimal'
 
-- task: VSTest@2
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare analysis on SonarCloud'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    SonarCloud: 'SonarCloud'
+    organization: 'fiap-net-group'
+    scannerMode: 'MSBuild'
+    projectKey: 'fiap-net-group_graduation-phase-two'
+    projectName: 'graduation-phase-two'
+    extraProperties: |
+      sonar.exclusions=**/obj/**,**/*.dll
+      sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/**/*.trx
+      sonar.cs.opencover.reportsPaths=$(Agent.BuildDirectory)/**/coverage.opencover.xml
+      sonar.verbose=true
+      sonar.exclusions=**/*Program.cs,**/*appsettings.json,**/*Dockerfile
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
+  inputs:
+    command: 'build'
+    projects: '**/*.sln'
+    arguments: '--no-restore --configuration Release'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Tests'
+  inputs:
+    command: 'test'
+    projects: '**/*.sln'
+    arguments: '--configuration Release --no-build --collect:"XPlat Code Coverage" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover'
+
+- task: PublishTestResults@2
+  displayName: 'Publish Code Coverage'
+  inputs:
+    testRunner: 'VSTest'
+    testResultsFiles: '$(Agent.TempDirectory)/**.*trx'
+    mergeTestResults: true 
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Run Sonar Analysis'
+  continueOnError: true
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish Sonar Analysis Result'
+  continueOnError: true
+  inputs:
+    pollingTimeoutSec: '300'
