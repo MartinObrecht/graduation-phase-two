@@ -61,7 +61,7 @@ steps:
 
 - task: PublishTestResults@2
   displayName: "Publish Code Coverage"
-  input:
+  inputs:
     testRunner: "VSTest"
     testResultsFiles: "$(Agent.TempDirectory)/**.*trx"
     mergeTestResults: true 
