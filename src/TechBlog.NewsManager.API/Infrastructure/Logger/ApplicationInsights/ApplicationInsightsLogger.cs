@@ -80,7 +80,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Logger.ApplicationInsights
             return traceTelemetry;
         }
 
-        public void LogException(string message, LoggerManagerSeverity severity, Exception exception = null)
+        public void LogException(string message, LoggerManagerSeverity severity, Exception exception = default)
         {
             if (_minLevel > severity)
                 return;
@@ -90,7 +90,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Logger.ApplicationInsights
             LogException(message, severity, exception, parameters);
         }
 
-        public void LogException(string message, LoggerManagerSeverity severity, Exception exception, params (string name, object value)[] parameters)
+        public void LogException(string message, LoggerManagerSeverity severity, Exception exception = default, params (string name, object value)[] parameters)
         {
             if (_minLevel > severity)
                 return;
@@ -104,7 +104,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Logger.ApplicationInsights
             LogException(message, severity, exception, parametersAsString);
         }
 
-        public void LogException(string message, LoggerManagerSeverity severity, Exception exception, params (string name, string value)[] parameters)
+        public void LogException(string message, LoggerManagerSeverity severity, Exception exception = default, params (string name, string value)[] parameters)
         {
             if (_minLevel >= severity)
                 return;

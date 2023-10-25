@@ -17,7 +17,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Logger
                 throw new ArgumentException("Invalid log level");
         }
 
-        public void LogException(string message, LoggerManagerSeverity severity, Exception exception = null) =>
+        public void LogException(string message, LoggerManagerSeverity severity, Exception exception = default) =>
             LogException(message, severity, exception, Array.Empty<(string name, string value)>());
 
         public void LogException(string message, LoggerManagerSeverity severity, Exception exception = default, params (string name, object value)[] parameters)
