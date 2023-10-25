@@ -52,7 +52,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create
 
             if (string.IsNullOrWhiteSpace(userType) || userType != Enum.GetName(BlogUserType.JOURNALIST))
             {
-                logger.LogInformation("User is forbidden to create a new", ("Title", request.Title), ("userId", blogNew.AuthorId));
+                logger.Log("User is forbidden to create a new", LoggerManagerSeverity.INFORMATION, ("Title", request.Title), ("userId", blogNew.AuthorId));
 
                 return Results.BadRequest(response.AsError(ResponseMessage.UserMustBeAJournalist));
             }
@@ -61,7 +61,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create
 
             if (!await unitOfWork.SaveChangesAsync(cancellationToken))
             {
-                logger.LogWarning("Error creating blog new", ("Title", request.Title));
+                logger.Log("Error creating blog new", LoggerManagerSeverity.WARNING, ("Title", request.Title));
 
                 throw new InfrastructureException("An unexpected error ocurred");
             }

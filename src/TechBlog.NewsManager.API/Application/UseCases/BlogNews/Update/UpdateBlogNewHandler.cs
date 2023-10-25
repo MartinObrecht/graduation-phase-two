@@ -44,14 +44,14 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Update
 
             if (!blogNew.Enabled)
             {
-                logger.LogDebug("Blog new not found", ("Id", id));
+                logger.Log("Blog new not found", LoggerManagerSeverity.DEBUG, ("Id", id));
 
                 return Results.NotFound(response.AsError(ResponseMessage.BlogNewNotFound));
             }
 
             if (blogNew.AuthorId != user.FindFirstValue(ClaimTypes.NameIdentifier))
             {
-                logger.LogInformation("User not allowed to update blog new", ("Id", id), ("UserId", user.FindFirstValue(ClaimTypes.NameIdentifier)), ("BlogNewAuthorId", blogNew.AuthorId));
+                logger.Log("User not allowed to update blog new", LoggerManagerSeverity.INFORMATION, ("Id", id), ("UserId", user.FindFirstValue(ClaimTypes.NameIdentifier)), ("BlogNewAuthorId", blogNew.AuthorId));
 
                 return Results.Forbid();
             }
@@ -64,18 +64,18 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Update
             }
             catch (ValidationException ex)
             {
-                logger.LogDebug("Invalid request", ("Id", id), ("Request", request), ("Errors", ex.Value));
+                logger.Log("Invalid request", LoggerManagerSeverity.DEBUG, ("Id", id), ("Request", request), ("Errors", ex.Value));
 
                 return Results.BadRequest(response.AsError(ResponseMessage.InvalidBody));
             }
             catch
             {
-                logger.LogError("An error ocurred at the database", default, ("Id", id));
+                logger.LogException("An error ocurred at the database", LoggerManagerSeverity.ERROR, default, ("Id", id));
 
                 throw new InfrastructureException("An unexpected error ocurred");
             }
 
-            logger.LogDebug("Blog new updated", ("Id", id), ("Request", request));
+            logger.Log("Blog new updated", LoggerManagerSeverity.DEBUG, ("Id", id), ("Request", request));
 
             return Results.Ok(response);
         }

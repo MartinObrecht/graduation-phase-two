@@ -28,7 +28,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Identity
 
             if (!result.Succeeded)
             {
-                _logger.LogInformation("Error creating user");
+                _logger.Log("Error creating user", LoggerManagerSeverity.INFORMATION);
                 return false;
             }
 
@@ -80,7 +80,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Identity
             foreach (var userRole in userRoles)
                 claims.Add(new Claim("role", userRole));
 
-            _logger.LogDebug("Valid login", ("username", user.Email));
+            _logger.Log("Valid login", LoggerManagerSeverity.DEBUG, ("username", user.Email));
 
             return GenerateToken(user, new ClaimsIdentity(claims));
         }
@@ -89,14 +89,14 @@ namespace TechBlog.NewsManager.API.Infrastructure.Identity
         {
             if (user is null)
             {
-                _logger.LogInformation("User don't exists");
+                _logger.Log("User don't exists", LoggerManagerSeverity.INFORMATION);
 
                 return false;
             }
 
             if (!await _userManager.CheckPasswordAsync(user, password))
             {
-                _logger.LogInformation("Invalid password", ("username", user.Email));
+                _logger.Log("Invalid password", LoggerManagerSeverity.INFORMATION, ("username", user.Email));
 
                 return false;
             }

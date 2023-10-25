@@ -55,35 +55,35 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy
 
             validator.ThrowIfInvalid(request);
 
-            logger.LogDebug("Begin get news", ("strategy", request.Strategy));
+            logger.Log("Begin get news", LoggerManagerSeverity.DEBUG, ("strategy", request.Strategy));
 
             var response = new BaseResponseWithValue<object>();
 
-            logger.LogDebug("Searching strategy", ("strategy", Enum.GetName(strategy)));
+            logger.Log("Searching strategy", LoggerManagerSeverity.DEBUG, ("strategy", Enum.GetName(strategy)));
 
             var matchedStrategies = getBlogNewsStrategies.Where(s => s.Strategy == strategy).ToList();
 
             if (matchedStrategies.Count == 0)
             {
-                logger.LogCritical("The strategy is not implemented", parameters: ("strategy", Enum.GetName(strategy)));
+                logger.LogException("The strategy is not implemented", LoggerManagerSeverity.CRITICAL, parameters: ("strategy", Enum.GetName(strategy)));
 
                 throw new NotImplementedException("The strategy is not implemented");
             }
 
             if (matchedStrategies.Count > 1)
             {
-                logger.LogCritical("The strategy has more than one implementation", parameters: ("strategy", Enum.GetName(strategy)));
+                logger.LogException("The strategy has more than one implementation", LoggerManagerSeverity.CRITICAL, parameters: ("strategy", Enum.GetName(strategy)));
 
                 throw new ArgumentException("The strategy has more than one implementation");
             }
 
-            logger.LogDebug("Strategy was found", ("strategy", Enum.GetName(strategy)));
+            logger.Log("Strategy was found", LoggerManagerSeverity.DEBUG, ("strategy", Enum.GetName(strategy)));
 
             var strategyBody = mapper.Map<GetBlogNewsStrategyBody>(request);
 
             var strategyResponse = await matchedStrategies[0].RunAsync(strategyBody, cancellationToken);
 
-            logger.LogDebug("End get news", ("strategy", request.Strategy));
+            logger.Log("End get news", LoggerManagerSeverity.DEBUG, ("strategy", request.Strategy));
 
             return Results.Ok(response.AsSuccess(strategyResponse));
         }

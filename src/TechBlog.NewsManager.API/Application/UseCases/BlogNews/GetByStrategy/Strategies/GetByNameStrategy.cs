@@ -24,18 +24,18 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy.S
 
         public async Task<object> RunAsync(GetBlogNewsStrategyBody body, CancellationToken cancellationToken)
         {
-            _logger.LogDebug("Getting blognew by name", ("strategy", Strategy), ("body", body));
+            _logger.Log("Getting blognew by name", LoggerManagerSeverity.DEBUG, ("strategy", Strategy), ("body", body));
 
             if (body is null || !body.ValidName)
             {
-                _logger.LogInformation("Invalid body", ("strategy", Strategy), ("body", body));
+                _logger.Log("Invalid body", LoggerManagerSeverity.INFORMATION, ("strategy", Strategy), ("body", body));
 
                 throw new BusinessException("Invalid strategy body");
             }
 
             var blogNews = await _unitOfWork.BlogNew.GetByNameAsync(body.Name, cancellationToken);
 
-            _logger.LogDebug("End getting blognew by name", ("strategy", Strategy), ("body", body), ("newsFoundCount", blogNews.Count()));
+            _logger.Log("End getting blognew by name", LoggerManagerSeverity.DEBUG, ("strategy", Strategy), ("body", body), ("newsFoundCount", blogNews.Count()));
 
             return _mapper.Map<IEnumerable<BlogNewViewModel>>(blogNews);
         }

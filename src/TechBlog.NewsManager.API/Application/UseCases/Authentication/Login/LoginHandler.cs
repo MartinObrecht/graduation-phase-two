@@ -29,7 +29,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.Authentication.Login
                                                  LoginRequest request,
                                                  CancellationToken cancellationToken)
         {
-            logger.LogDebug("Begin Login", ("username", request.Username));
+            logger.Log("Begin Login", LoggerManagerSeverity.DEBUG, ("username", request.Username));
 
             validator.ThrowIfInvalid(request);
 
@@ -39,7 +39,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.Authentication.Login
 
             if (!user.Exists)
             {
-                logger.LogWarning("Officer don't exists", ("username", request.Username));
+                logger.Log("Officer don't exists", LoggerManagerSeverity.WARNING, ("username", request.Username));
 
                 return Results.BadRequest(response.AsError(ResponseMessage.InvalidCredentials));
             }
@@ -48,12 +48,12 @@ namespace TechBlog.NewsManager.API.Application.UseCases.Authentication.Login
 
             if (!accessToken.Valid)
             {
-                logger.LogWarning("Invalid credentials", ("username", request.Username));
+                logger.Log("Invalid credentials", LoggerManagerSeverity.WARNING, ("username", request.Username));
 
                 return Results.BadRequest(response.AsError(ResponseMessage.InvalidCredentials));
             }
 
-            logger.LogDebug("Success Login", ("username", request.Username));
+            logger.Log("Success Login", LoggerManagerSeverity.DEBUG, ("username", request.Username));
 
             return Results.Ok(response.AsSuccess(accessToken));
         }
