@@ -43,7 +43,7 @@ steps:
       sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/**/*.trx
       sonar.cs.opencover.reportsPaths=$(Agent.BuildDirectory)/**/coverage.opencover.xml
       sonar.verbose=true
-      sonar.exclusions=**/*Program.cs,**/*appsettings.json,**/*Dockerfile
+      sonar.exclusions=**/*Program.cs,**/*appsettings.json,**/*appsettings.*.json,**/*Dockerfile
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
