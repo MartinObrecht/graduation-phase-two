@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Exceptions;
+using TechBlog.NewsManager.API.Domain.Extensions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
 
@@ -42,19 +43,11 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Update
 
             var blogNew = await unitOfWork.BlogNew.GetByIdAsync(id, cancellationToken);
 
-            if (!blogNew.Enabled)
-            {
-                logger.Log("Blog new not found", LoggerManagerSeverity.DEBUG, ("Id", id));
+            if (!blogNew.IsEnabled(logger, response, out var notFoundResult))
+                return notFoundResult;
 
-                return Results.NotFound(response.AsError(ResponseMessage.BlogNewNotFound));
-            }
-
-            if (blogNew.AuthorId != user.FindFirstValue(ClaimTypes.NameIdentifier))
-            {
-                logger.Log("User not allowed to update blog new", LoggerManagerSeverity.INFORMATION, ("Id", id), ("UserId", user.FindFirstValue(ClaimTypes.NameIdentifier)), ("BlogNewAuthorId", blogNew.AuthorId));
-
-                return Results.Forbid();
-            }
+            if (!blogNew.IsTheOwner(user, logger, out var forbidResult))
+                return forbidResult;
 
             try
             {

@@ -1,9 +1,12 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Data.SqlClient;
 using System.Text;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Entities;
+using TechBlog.NewsManager.API.Domain.Exceptions;
+using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Infrastructure.Database.Context;
 
 namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
@@ -12,13 +15,15 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
     {
         private readonly IDatabaseContext _context;
         private readonly SqlConnection _databaseConnection;
+        private readonly ILoggerManager _logger;
 
         private readonly int _timeout;
 
-        public BlogNewsRepository(IDatabaseContext context, SqlConnection databaseConnection, IConfiguration configuration)
+        public BlogNewsRepository(IDatabaseContext context, SqlConnection databaseConnection, IConfiguration configuration, ILoggerManager logger)
         {
             _context = context;
             _databaseConnection = databaseConnection;
+            _logger = logger;
 
             _timeout = configuration.GetValue<int>("DatabaseTimeoutInSeconds");
         }
@@ -108,7 +113,16 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
 
         public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            await _context.BlogNew.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
+            try
+            {
+                await _context.BlogNew.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
+            }
+            catch
+            {
+                _logger.LogException("An error ocurred at the database", LoggerManagerSeverity.ERROR, default, ("Id", id));
+
+                throw new InfrastructureException("An unexpected error ocurred");
+            }
         }
 
         public async Task UpdateAsync(BlogNew blogNew, CancellationToken cancellationToken = default)

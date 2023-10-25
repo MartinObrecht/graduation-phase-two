@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Exceptions;
+using TechBlog.NewsManager.API.Domain.Extensions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
 
@@ -36,30 +37,13 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Delete
 
             var blogNew = await unitOfWork.BlogNew.GetByIdAsync(id, cancellationToken);
 
-            if (!blogNew.Enabled)
-            {
-                logger.Log("Blog new not found", LoggerManagerSeverity.DEBUG, ("Id", id));
+            if (!blogNew.IsEnabled(logger, response, out var notFoundResult))
+                return notFoundResult;
 
-                return Results.NotFound(response.AsError(ResponseMessage.BlogNewNotFound));
-            }
+            if (!blogNew.IsTheOwner(user, logger, out var forbidResult))
+                return forbidResult;
 
-            if (blogNew.AuthorId != user.FindFirstValue(ClaimTypes.NameIdentifier))
-            {
-                logger.Log("User not allowed to delete blog new", LoggerManagerSeverity.INFORMATION, ("Id", id), ("UserId", user.FindFirstValue(ClaimTypes.NameIdentifier)), ("BlogNewAuthorId", blogNew.AuthorId));
-
-                return Results.Forbid();
-            }
-
-            try
-            {
-                await unitOfWork.BlogNew.DeleteAsync(id, cancellationToken);
-            }
-            catch
-            {
-                logger.LogException("An error ocurred at the database", LoggerManagerSeverity.ERROR, default, ("Id", id));
-
-                throw new InfrastructureException("An unexpected error ocurred");
-            }
+            await unitOfWork.BlogNew.DeleteAsync(id, cancellationToken);
 
             logger.Log("Blog new deleted", LoggerManagerSeverity.DEBUG, ("Id", id));
 
