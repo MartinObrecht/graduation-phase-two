@@ -82,7 +82,7 @@ namespace TechBlog.NewsManager.AcceptanceTests.Domain.StepDefinitions
         [Then(@"I should get a response to create a new user with status code (.*)")]
         public void ThenIShouldGetAResponseToCreateANewUserWithStatusCode(int p0)
         {
-            Assert.Equal(p0,(int)_httpContext.Response.StatusCode);
+            Assert.Equal(p0, _httpContext.Response.StatusCode);
         }
 
         [When(@"I validate request to create a new user")]
@@ -103,7 +103,7 @@ namespace TechBlog.NewsManager.AcceptanceTests.Domain.StepDefinitions
         [Then(@"I should get a validate error to create a new user with this message ""([^""]*)""")]
         public void ThenIShouldGetAValidateErrorToCreateANewUserWithThisMessage(string p0)
         {
-            Assert.Equal(p0, _validationResult.Errors.First().ErrorMessage);
+            Assert.Equal(p0, _validationResult.Errors[0].ErrorMessage);
         }
     }
 }

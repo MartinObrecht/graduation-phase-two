@@ -54,7 +54,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Context
             }
             catch (Exception ex)
             {
-                _logger.LogCritical("Invalid database connection", ex, ("context", nameof(SqlServerContext)));
+                _logger.LogException("Invalid database connection", LoggerManagerSeverity.CRITICAL, ex, ("context", nameof(SqlServerContext)));
                 Environment.Exit(2);
             }
         }
@@ -78,7 +78,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Context
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error commiting transaction", ex);
+                _logger.LogException("Error commiting transaction", LoggerManagerSeverity.ERROR, ex);
                 transaction.Rollback();
                 return Task.FromResult(false);
             }

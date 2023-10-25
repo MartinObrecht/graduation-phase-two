@@ -122,7 +122,7 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogNews
             };
 
             _unitOfWork.BlogNew.GetByIdAsync(id, _cancellationToken).Returns(blogNew);
-            _unitOfWork.BlogNew.DeleteAsync(id, _cancellationToken).Throws(new Exception());
+            _unitOfWork.BlogNew.DeleteAsync(id, _cancellationToken).Throws(new InfrastructureException("Example message"));
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {

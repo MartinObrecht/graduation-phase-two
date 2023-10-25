@@ -27,8 +27,6 @@ namespace TechBlog.NewsManager.AcceptanceTests.Domain.StepDefinitions
         private IResult _response;
         private HttpContext _httpContext;
         private BaseResponse _baseResponse;
-        private ValidationResultFluent _validationResult;
-
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private ClaimsPrincipal _claimsPrincipal;

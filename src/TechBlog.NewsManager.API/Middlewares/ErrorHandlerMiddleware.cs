@@ -26,7 +26,7 @@ namespace PoliceDepartment.EvidenceManager.API.Middlewares
 
                 if (context.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
                 {
-                    _logger.LogWarning("Unauthorized error caught by middleware - JWT TOKEN");
+                    _logger.Log("Unauthorized error caught by middleware - JWT TOKEN", LoggerManagerSeverity.WARNING);
 
                     var code = HttpStatusCode.Unauthorized;
 
@@ -37,25 +37,25 @@ namespace PoliceDepartment.EvidenceManager.API.Middlewares
             }
             catch (BusinessException ex)
             {
-                _logger.LogWarning("Business error caught by middleware", ("exception", ex));
+                _logger.Log("Business error caught by middleware", LoggerManagerSeverity.WARNING, ("exception", ex));
 
                 await HandleExceptionAsync(context, ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogWarning("Unauthorized error caught by middleware - API TOKEN", ("exception", ex));
+                _logger.Log("Unauthorized error caught by middleware - API TOKEN", LoggerManagerSeverity.WARNING, ("exception", ex));
 
                 await HandleExceptionAsync(context, ex);
             }
             catch (ValidationException ex)
             {
-                _logger.LogWarning("Validation error caught by middleware", ("exception", ex));
+                _logger.Log("Validation error caught by middleware", LoggerManagerSeverity.WARNING, ("exception", ex));
 
                 await HandleExceptionAsync(context, ex);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Unexpected error caught by middleware", ex);
+                _logger.LogException("Unexpected error caught by middleware", LoggerManagerSeverity.ERROR, ex);
 
                 await HandleExceptionAsync(context);
             }

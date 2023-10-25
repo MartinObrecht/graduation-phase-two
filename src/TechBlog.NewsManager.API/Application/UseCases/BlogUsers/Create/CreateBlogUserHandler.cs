@@ -38,7 +38,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
                                                  CreateBlogUserRequest request,
                                                  CancellationToken cancellationToken)
         {
-            logger.LogDebug("Begin creating user", ("Email", request.Email));
+            logger.Log("Begin creating user", LoggerManagerSeverity.DEBUG, ("Email", request.Email));
 
             validator.ThrowIfInvalid(request);
 
@@ -48,16 +48,16 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
 
             if (await identityManager.ExistsAsync(blogUser.Email, cancellationToken))
             {
-                logger.LogInformation("User already exists", ("Email", request.Email));
+                logger.Log("User already exists", LoggerManagerSeverity.INFORMATION, ("Email", request.Email));
 
                 return Results.BadRequest(response.AsError(ResponseMessage.UserAlreadyExists));
             }
 
-            logger.LogDebug("User don't exists, creting new", ("Email", request.Email));
+            logger.Log("User don't exists, creting new", LoggerManagerSeverity.DEBUG, ("Email", request.Email));
 
             if (!await identityManager.CreateUserAsync(blogUser, request.Password, cancellationToken))
             {
-                logger.LogWarning("Error creating user", ("Email", request.Email));
+                logger.Log("Error creating user", LoggerManagerSeverity.WARNING, ("Email", request.Email));
 
                 return Results.BadRequest(response.AsError(ResponseMessage.InvalidInformation));
             }
@@ -66,7 +66,7 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create
 
             var accessToken = await identityManager.AuthenticateAsync(blogUser, request.Password, cancellationToken, ("name", blogUser.Name));
 
-            logger.LogDebug("Success creating user", ("Email", request.Email));
+            logger.Log("Success creating user", LoggerManagerSeverity.DEBUG, ("Email", request.Email));
 
             return Results.Created(Route, response.AsSuccess(accessToken));
         }

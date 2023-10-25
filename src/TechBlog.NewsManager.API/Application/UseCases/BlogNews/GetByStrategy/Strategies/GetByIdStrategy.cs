@@ -24,11 +24,11 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy.S
 
         public async Task<object> RunAsync(GetBlogNewsStrategyBody body, CancellationToken cancellationToken)
         {
-            _logger.LogDebug("Getting blognew by id", ("strategy", Strategy), ("body", body));
+            _logger.Log("Getting blognew by id", LoggerManagerSeverity.DEBUG, ("strategy", Strategy), ("body", body));
 
             if (body is null || !body.ValidId)
             {
-                _logger.LogInformation("Invalid body", ("strategy", Strategy), ("body", body));
+                _logger.Log("Invalid body", LoggerManagerSeverity.INFORMATION, ("strategy", Strategy), ("body", body));
 
                 throw new BusinessException("Invalid strategy body");
             }
@@ -37,12 +37,12 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.GetByStrategy.S
 
             if (!blogNew.Enabled)
             {
-                _logger.LogInformation("Blog new don't exists", ("strategy", Strategy), ("body", body), ("blogNew", blogNew));
+                _logger.Log("Blog new don't exists", LoggerManagerSeverity.INFORMATION, ("strategy", Strategy), ("body", body), ("blogNew", blogNew));
 
                 throw new BusinessException("Blog new doesn't exists");
             }
 
-            _logger.LogDebug("Blog new found", ("strategy", Strategy), ("body", body), ("blogNew", blogNew));
+            _logger.Log("Blog new found", LoggerManagerSeverity.DEBUG, ("strategy", Strategy), ("body", body), ("blogNew", blogNew));
 
             return _mapper.Map<BlogNewViewModel>(blogNew);
         }

@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using TechBlog.NewsManager.API.Domain.Database;
 using TechBlog.NewsManager.API.Domain.Exceptions;
+using TechBlog.NewsManager.API.Domain.Extensions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
 
@@ -42,19 +43,11 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Update
 
             var blogNew = await unitOfWork.BlogNew.GetByIdAsync(id, cancellationToken);
 
-            if (!blogNew.Enabled)
-            {
-                logger.LogDebug("Blog new not found", ("Id", id));
+            if (!blogNew.IsEnabled(logger, response, out var notFoundResult))
+                return notFoundResult;
 
-                return Results.NotFound(response.AsError(ResponseMessage.BlogNewNotFound));
-            }
-
-            if (blogNew.AuthorId != user.FindFirstValue(ClaimTypes.NameIdentifier))
-            {
-                logger.LogInformation("User not allowed to update blog new", ("Id", id), ("UserId", user.FindFirstValue(ClaimTypes.NameIdentifier)), ("BlogNewAuthorId", blogNew.AuthorId));
-
-                return Results.Forbid();
-            }
+            if (!blogNew.IsTheOwner(user, logger, out var forbidResult))
+                return forbidResult;
 
             try
             {
@@ -64,18 +57,18 @@ namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Update
             }
             catch (ValidationException ex)
             {
-                logger.LogDebug("Invalid request", ("Id", id), ("Request", request), ("Errors", ex.Value));
+                logger.Log("Invalid request", LoggerManagerSeverity.DEBUG, ("Id", id), ("Request", request), ("Errors", ex.Value));
 
                 return Results.BadRequest(response.AsError(ResponseMessage.InvalidBody));
             }
             catch
             {
-                logger.LogError("An error ocurred at the database", default, ("Id", id));
+                logger.LogException("An error ocurred at the database", LoggerManagerSeverity.ERROR, default, ("Id", id));
 
                 throw new InfrastructureException("An unexpected error ocurred");
             }
 
-            logger.LogDebug("Blog new updated", ("Id", id), ("Request", request));
+            logger.Log("Blog new updated", LoggerManagerSeverity.DEBUG, ("Id", id), ("Request", request));
 
             return Results.Ok(response);
         }

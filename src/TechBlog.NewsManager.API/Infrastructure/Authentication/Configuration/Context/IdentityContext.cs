@@ -53,7 +53,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.C
             }
             catch (Exception ex)
             {
-                _logger.LogCritical("Invalid database connection", ex, ("context", nameof(IdentityContext)));
+                _logger.LogException("Invalid database connection", LoggerManagerSeverity.CRITICAL, ex, ("context", nameof(IdentityContext)));
                 Environment.Exit(2);
             }
         }
