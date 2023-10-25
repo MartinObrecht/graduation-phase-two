@@ -51,7 +51,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Identity
 
             var user = await _userManager.FindByNameAsync(email);
 
-            if(user is null)
+            if (user is null)
                 user = await _userManager.FindByEmailAsync(email);
 
             return user is not null ? user.WithInternalIdMapped() : new BlogUser(false);

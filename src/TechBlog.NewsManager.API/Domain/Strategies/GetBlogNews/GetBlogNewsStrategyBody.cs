@@ -11,8 +11,8 @@
         public bool ValidId => Id != Guid.Empty;
         public bool ValidName => !string.IsNullOrWhiteSpace(Name);
         public bool ValidTags => Tags != null && Tags.Length > 0;
-        public bool ValidDateInterval => To != DateTime.MinValue && 
-                                         From != DateTime.MinValue && 
+        public bool ValidDateInterval => To != DateTime.MinValue &&
+                                         From != DateTime.MinValue &&
                                          From <= To;
 
         public GetBlogNewsStrategyBody() { }

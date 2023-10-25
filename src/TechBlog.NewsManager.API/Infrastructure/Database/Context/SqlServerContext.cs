@@ -54,12 +54,12 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Context
             }
             catch (Exception ex)
             {
-                _logger.LogCritical("Invalid database connection", ex, ("context",nameof(SqlServerContext)));
+                _logger.LogCritical("Invalid database connection", ex, ("context", nameof(SqlServerContext)));
                 Environment.Exit(2);
             }
         }
 
-        public async new Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
+        public async new Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return await base.SaveChangesAsync(cancellationToken) > 0;
         }
@@ -71,7 +71,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Context
 
         public Task<bool> CommitTransactionAsync(IDbContextTransaction transaction, CancellationToken cancellationToken)
         {
-            try 
+            try
             {
                 transaction.Commit();
                 return Task.FromResult(true);

@@ -4,9 +4,10 @@ using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.API.Application.UseCases.BlogNews.Create
 {
-    public class CreateBlogNewValidator: AbstractValidator<CreateBlogNewRequest>
+    public class CreateBlogNewValidator : AbstractValidator<CreateBlogNewRequest>
     {
-        public CreateBlogNewValidator(){
+        public CreateBlogNewValidator()
+        {
             RuleFor(c => c.Title).Cascade(CascadeMode.Continue)
                                  .NotEmpty()
                                  .WithMessage(ResponseMessage.InvalidTitle.GetDescription());

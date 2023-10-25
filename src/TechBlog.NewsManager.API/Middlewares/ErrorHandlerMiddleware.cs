@@ -9,14 +9,13 @@ namespace PoliceDepartment.EvidenceManager.API.Middlewares
 {
     public sealed class ErrorHandlerMiddleware
     {
-        private readonly RequestDelegate _next;
         private readonly ILoggerManager _logger;
+        private readonly RequestDelegate _next;
 
-        public ErrorHandlerMiddleware(RequestDelegate next,
-                                      ILoggerManager logger)
+        public ErrorHandlerMiddleware(ILoggerManager logger, RequestDelegate next)
         {
-            _next = next;
             _logger = logger;
+            _next = next;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -48,7 +47,7 @@ namespace PoliceDepartment.EvidenceManager.API.Middlewares
 
                 await HandleExceptionAsync(context, ex);
             }
-            catch(ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning("Validation error caught by middleware", ("exception", ex));
 

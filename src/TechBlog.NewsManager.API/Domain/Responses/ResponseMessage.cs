@@ -26,7 +26,7 @@ namespace TechBlog.NewsManager.API.Domain.Responses
         InvalidInformation = 10,
         [Description("Invalid credentials")]
         InvalidCredentials = 11,
-         [Description("Invalid title")]
+        [Description("Invalid title")]
         InvalidTitle = 12,
         [Description("Invalid description")]
         InvalidDescription = 13,
