@@ -7,7 +7,7 @@ trigger:
 - "*"
 
 pool:
-  vmImage: 'ubunto-latest'
+  vmImage: 'ubuntu-latest'
 
 steps:
 - script: "wget -qO- https://raw.githubusercontent.com/artifacts-credprovider/master/helpers/installcredprovider.sh  | bash"
