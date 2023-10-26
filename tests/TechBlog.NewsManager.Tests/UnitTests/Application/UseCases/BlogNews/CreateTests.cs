@@ -14,24 +14,20 @@ using TechBlog.NewsManager.Tests.UnitTests.Fixtures;
 
 namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogNews
 {
-    [Collection(nameof(UnitTestsFixtureCollection))]
     public class CreateTests
     {
-        private readonly UnitTestsFixture _fixture;
-
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateBlogNewRequest> _validator;
         private readonly IUnitOfWork _unitOfWork;
         private ClaimsPrincipal _claimsPrincipal;
-        public CreateTests(UnitTestsFixture fixture)
+        public CreateTests()
         {
             _logger = Substitute.For<ILoggerManager>();
             _mapper = Substitute.For<IMapper>();
             _validator = Substitute.For<IValidator<CreateBlogNewRequest>>();
             _unitOfWork = Substitute.For<IUnitOfWork>();
             _claimsPrincipal = Substitute.For<ClaimsPrincipal>();
-            _fixture = fixture;
         }
 
         [Theory]
@@ -90,7 +86,7 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogNews
                 })
             });
 
-            var entity = _fixture.BlogNew.GenerateBlogNew(request);
+            var entity = BlogNewFixtures.GenerateBlogNew(request);
 
             _unitOfWork.BlogNew.AddAsync(entity, CancellationToken.None).Returns(Task.CompletedTask);
             _unitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(expectedSuccess);
@@ -99,8 +95,8 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogNews
             var response = CreateBlogNewHandler.Action(_logger, _mapper, _unitOfWork, request, _claimsPrincipal, _validator, CancellationToken.None).Result;
 
 
-            var responseContext = _fixture.HttpContext.GetResposeHttpContext(response);
-            var responseBody = _fixture.HttpContext.GetObjectFromBodyAsync<BaseResponse>(responseContext).Result;
+            var responseContext = HttpContextFixtures.GetResposeHttpContext(response);
+            var responseBody = HttpContextFixtures.GetObjectFromBodyAsync<BaseResponse>(responseContext).Result;
 
 
             //Assert

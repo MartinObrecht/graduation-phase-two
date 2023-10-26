@@ -16,7 +16,7 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Fixtures
                 new AccessTokenModel();
         }
 
-        public string GenerateFakeJwtToken()
+        public static string GenerateFakeJwtToken()
         {
             var tokenDescriptor = new SecurityTokenDescriptor
             {

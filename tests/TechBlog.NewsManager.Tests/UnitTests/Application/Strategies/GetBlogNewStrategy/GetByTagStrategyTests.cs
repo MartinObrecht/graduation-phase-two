@@ -52,7 +52,7 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.Strategies.GetBlogNew
         public void RunAsync_AllInvalidCases_ShouldThrow(bool bodyIsNull, string exceptionMessage)
         {
             //Arrange
-            var body = bodyIsNull ? null : new GetBlogNewsStrategyBody(new string[0]);
+            var body = bodyIsNull ? null : new GetBlogNewsStrategyBody(Array.Empty<string>());
 
             var sut = new GetByTagStrategy(_logger, _unitOfWork, _mapper);
 

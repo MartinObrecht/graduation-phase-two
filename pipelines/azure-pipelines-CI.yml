@@ -39,11 +39,10 @@ steps:
     projectKey: 'fiap-net-group_graduation-phase-two'
     projectName: 'graduation-phase-two'
     extraProperties: |
-      sonar.exclusions=**/obj/**,**/*.dll
       sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/**/*.trx
       sonar.cs.opencover.reportsPaths=$(Agent.BuildDirectory)/**/coverage.opencover.xml
       sonar.verbose=true
-      sonar.exclusions=**/*Program.cs,**/*appsettings.json,**/*appsettings.*.json,**/*Dockerfile
+      sonar.exclusions=**/obj/**,**/*.dll,**/*Program.cs,**/*appsettings.json,**/*appsettings.*.json,**/*Dockerfile*
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'

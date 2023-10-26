@@ -9,7 +9,7 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Fixtures
 {
     public class HttpContextFixtures
     {
-        public HttpContext GenerateAuthenticateduserHttpContext(BlogUserType userType)
+        public static HttpContext GenerateAuthenticateduserHttpContext(BlogUserType userType)
         {
             var identity = new ClaimsIdentity("authMethod");
 
@@ -24,12 +24,12 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Fixtures
             };
         }
 
-        public HttpContext GenerateDefaultHttpContext()
+        public static HttpContext GenerateDefaultHttpContext()
         {
             return new DefaultHttpContext();
         }
 
-        public HttpContext GetResposeHttpContext(IResult response)
+        public static HttpContext GetResposeHttpContext(IResult response)
         {
             var context = new DefaultHttpContext
             {
@@ -47,7 +47,7 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Fixtures
             return context;
         }
 
-        public async Task<T> GetObjectFromBodyAsync<T>(HttpContext context, string selectJson = null)
+        public static async Task<T> GetObjectFromBodyAsync<T>(HttpContext context, string selectJson = null)
         {
             using var bodyReader = new StreamReader(context.Response.Body);
 

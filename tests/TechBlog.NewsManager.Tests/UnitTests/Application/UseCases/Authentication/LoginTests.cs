@@ -75,8 +75,8 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.Authenticati
 
             //Act
             var response = LoginHandler.Action(_logger, _validator, _identityManager, request, CancellationToken.None).Result;
-            var responseContext = _fixture.HttpContext.GetResposeHttpContext(response);
-            var responseBody = _fixture.HttpContext.GetObjectFromBodyAsync<BaseResponseWithValue<AccessTokenModel>>(responseContext).Result;
+            var responseContext = HttpContextFixtures.GetResposeHttpContext(response);
+            var responseBody = HttpContextFixtures.GetObjectFromBodyAsync<BaseResponseWithValue<AccessTokenModel>>(responseContext).Result;
 
             //Assert
             responseContext.Response.StatusCode.Should().Be(success ? StatusCodes.Status200OK : StatusCodes.Status400BadRequest);

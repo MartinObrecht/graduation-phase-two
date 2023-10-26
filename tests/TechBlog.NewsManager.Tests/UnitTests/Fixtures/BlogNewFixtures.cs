@@ -3,9 +3,9 @@ using TechBlog.NewsManager.API.Domain.Entities;
 
 namespace TechBlog.NewsManager.Tests.UnitTests.Fixtures
 {
-    public class BlogNewFixtures
+    public static class BlogNewFixtures
     {
-        public BlogNew GenerateBlogNew(CreateBlogNewRequest request)
+        public static BlogNew GenerateBlogNew(CreateBlogNewRequest request)
         {
             return new BlogNew
             {
