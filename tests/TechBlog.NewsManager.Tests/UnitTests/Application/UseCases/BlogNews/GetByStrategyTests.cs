@@ -69,8 +69,8 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogNews
 
             //Act
             var response = await GetByStrategyHandler.Action(_logger, _mapper, _validator, _getBlogNewsStrategies, GetBlogNewsStrategy.GET_BY_ID, Guid.NewGuid(), null, null, null, null, CancellationToken.None);
-            var responseContext = _fixture.HttpContext.GetResposeHttpContext(response);
-            var responseBody = _fixture.HttpContext.GetObjectFromBodyAsync<BaseResponseWithValue<BlogNewViewModel>>(responseContext).Result;
+            var responseContext = HttpContextFixtures.GetResposeHttpContext(response);
+            var responseBody = HttpContextFixtures.GetObjectFromBodyAsync<BaseResponseWithValue<BlogNewViewModel>>(responseContext).Result;
 
             //Assert
             responseContext.Response.StatusCode.Should().Be(StatusCodes.Status200OK);
@@ -92,8 +92,8 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogNews
 
             //Act
             var response = await GetByStrategyHandler.Action(_logger, _mapper, _validator, _getBlogNewsStrategies, GetBlogNewsStrategy.GET_BY_NAME, null, "name", null, null, null, CancellationToken.None);
-            var responseContext = _fixture.HttpContext.GetResposeHttpContext(response);
-            var responseBody = _fixture.HttpContext.GetObjectFromBodyAsync<BaseResponseWithValue<IEnumerable<BlogNewViewModel>>>(responseContext).Result;
+            var responseContext = HttpContextFixtures.GetResposeHttpContext(response);
+            var responseBody = HttpContextFixtures.GetObjectFromBodyAsync<BaseResponseWithValue<IEnumerable<BlogNewViewModel>>>(responseContext).Result;
 
             //Assert
             responseContext.Response.StatusCode.Should().Be(StatusCodes.Status200OK);

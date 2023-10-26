@@ -13,20 +13,15 @@ using TechBlog.NewsManager.Tests.UnitTests.Fixtures;
 
 namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogUsers
 {
-    [Collection(nameof(UnitTestsFixtureCollection))]
     public class CreateTests
     {
-        private readonly UnitTestsFixture _fixture;
-
         private readonly IIdentityManager _identityManager;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateBlogUserRequest> _validator;
 
-        public CreateTests(UnitTestsFixture fixture)
+        public CreateTests()
         {
-            _fixture = fixture;
-
             _identityManager = Substitute.For<IIdentityManager>();
             _logger = Substitute.For<ILoggerManager>();
             _mapper = Substitute.For<IMapper>();
@@ -84,8 +79,8 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Application.UseCases.BlogUsers
 
             //Act
             var response = CreateBlogUserHandler.Action(_identityManager, _logger, _mapper, _validator, request, CancellationToken.None).Result;
-            var responseContext = _fixture.HttpContext.GetResposeHttpContext(response);
-            var responseBody = _fixture.HttpContext.GetObjectFromBodyAsync<BaseResponse>(responseContext).Result;
+            var responseContext = HttpContextFixtures.GetResposeHttpContext(response);
+            var responseBody = HttpContextFixtures.GetObjectFromBodyAsync<BaseResponse>(responseContext).Result;
 
             //Assert
             responseContext.Response.StatusCode.Should().Be(expectedSuccess ? StatusCodes.Status201Created : StatusCodes.Status400BadRequest);

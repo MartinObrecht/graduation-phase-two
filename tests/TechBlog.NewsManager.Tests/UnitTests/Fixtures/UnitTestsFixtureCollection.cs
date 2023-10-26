@@ -14,7 +14,6 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Fixtures
 
         public Faker<BlogNew> BlogNewFaker { get; init; }
         public Faker<BlogNewViewModel> BlogNewViewModelFaker { get; init; }
-        public BlogNewFixtures BlogNew { get; set; }
 
         public UnitTestsFixture()
         {
@@ -22,7 +21,6 @@ namespace TechBlog.NewsManager.Tests.UnitTests.Fixtures
             HttpContext = new();
             BlogNewFaker = new();
             BlogNewViewModelFaker = new();
-            BlogNew = new();
         }
     }
 }
