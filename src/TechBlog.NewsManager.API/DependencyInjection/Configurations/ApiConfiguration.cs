@@ -1,7 +1,7 @@
-﻿using PoliceDepartment.EvidenceManager.API.Middlewares;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using TechBlog.NewsManager.API.Endpoints;
+using TechBlog.NewsManager.API.Middlewares;
 using TechBlog.NewsManager.API.Middlewares.Logger;
 
 namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
@@ -31,11 +31,10 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 
             app.UseHttpsRedirection();
 
-            app.MapBlogUsersEndpoints();
-            app.MapBlogNewsEndpoints();
-            app.MapAuthenticationEndpoints();
-
             app.UseMiddlewareIfNotDevelopment<ApiKeyMiddleware>(isDevelopment);
+
+            app.UseApplicationEndpoints();
+
 
             return app;
         }

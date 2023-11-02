@@ -6,9 +6,9 @@ namespace TechBlog.NewsManager.API.Endpoints
 {
     public static class AuthenticationEndpoints
     {
-        public static IApplicationBuilder MapAuthenticationEndpoints(this WebApplication app)
+        public static IEndpointRouteBuilder MapAuthenticationEndpoints(this IEndpointRouteBuilder endpoints)
         {
-            app.MapMethods(LoginHandler.Route, LoginHandler.Methods, LoginHandler.Handle)
+            endpoints.MapMethods(LoginHandler.Route, LoginHandler.Methods, LoginHandler.Handle)
              .WithTags("Auth")
              .WithDescription("Authenticate the user")
              .WithDisplayName("Authenticate the user")
@@ -16,7 +16,7 @@ namespace TechBlog.NewsManager.API.Endpoints
              .Produces<BaseResponseWithValue<AccessTokenModel>>(StatusCodes.Status200OK)
              .Produces<BaseResponse>(StatusCodes.Status400BadRequest);
 
-            return app;
+            return endpoints;
         }
     }
 }

@@ -6,9 +6,9 @@ namespace TechBlog.NewsManager.API.Endpoints
 {
     public static class BlogUserEndpoints
     {
-        public static IApplicationBuilder MapBlogUsersEndpoints(this WebApplication app)
+        public static IEndpointRouteBuilder MapBlogUsersEndpoints(this IEndpointRouteBuilder endpoints)
         {
-            app.MapMethods(CreateBlogUserHandler.Route, CreateBlogUserHandler.Methods, CreateBlogUserHandler.Handle)
+            endpoints.MapMethods(CreateBlogUserHandler.Route, CreateBlogUserHandler.Methods, CreateBlogUserHandler.Handle)
               .WithTags("Users")
               .WithDescription("Create a new Blog User")
               .WithDisplayName("Create Blog User")
@@ -16,7 +16,7 @@ namespace TechBlog.NewsManager.API.Endpoints
               .Produces<BaseResponseWithValue<AccessTokenModel>>(StatusCodes.Status200OK)
               .Produces(StatusCodes.Status400BadRequest);
 
-            return app;
+            return endpoints;
         }
     }
 }

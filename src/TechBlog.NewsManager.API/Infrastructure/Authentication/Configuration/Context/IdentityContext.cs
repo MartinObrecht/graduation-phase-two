@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Logger;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.Context
 {
@@ -22,6 +25,10 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.C
 
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
                 relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+
+            foreach (var property in builder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
+                property.SetColumnType("varchar(300)");
 
             base.OnModelCreating(builder);
         }

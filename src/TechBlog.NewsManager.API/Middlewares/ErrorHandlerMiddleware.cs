@@ -5,7 +5,7 @@ using TechBlog.NewsManager.API.Domain.Exceptions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
 
-namespace PoliceDepartment.EvidenceManager.API.Middlewares
+namespace TechBlog.NewsManager.API.Middlewares
 {
     public sealed class ErrorHandlerMiddleware
     {

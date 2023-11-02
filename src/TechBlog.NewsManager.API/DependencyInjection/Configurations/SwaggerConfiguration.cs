@@ -10,7 +10,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
     [ExcludeFromCodeCoverage]
     public static class SwaggerConfiguration
     {
-        internal static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
+        public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {

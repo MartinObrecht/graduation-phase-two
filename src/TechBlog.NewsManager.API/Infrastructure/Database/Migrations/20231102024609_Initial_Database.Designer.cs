@@ -9,11 +9,11 @@ using TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.Conte
 
 #nullable disable
 
-namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.Migrations
+namespace TechBlog.NewsManager.API.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20230729193826_Initial_Identity")]
-    partial class Initial_Identity
+    [Migration("20231102024609_Initial_Database")]
+    partial class Initial_Database
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,19 +28,19 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("varchar(300)");
 
                     b.HasKey("Id");
 
@@ -52,6 +52,28 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IdentityRoleClaim<int>");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -61,20 +83,42 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IdentityUserClaim<int>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -86,14 +130,14 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.HasKey("Id");
 
@@ -105,17 +149,17 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -127,10 +171,10 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -142,16 +186,16 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -166,22 +210,22 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("varchar(300)")
                         .HasColumnName("BlogUserId");
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 29, 16, 38, 26, 659, DateTimeKind.Local).AddTicks(5379));
+                        .HasDefaultValue(new DateTime(2023, 11, 1, 23, 46, 9, 92, DateTimeKind.Local).AddTicks(1810));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<bool>("Enabled")
                         .ValueGeneratedOnAdd()
@@ -189,18 +233,18 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                         .HasDefaultValue(true);
 
                     b.Property<string>("InternalTags")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("varchar(300)")
                         .HasColumnName("Tags");
 
                     b.Property<DateTime>("LastUpdateAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 29, 16, 38, 26, 659, DateTimeKind.Local).AddTicks(5817));
+                        .HasDefaultValue(new DateTime(2023, 11, 1, 23, 46, 9, 92, DateTimeKind.Local).AddTicks(2169));
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(300)");
 
                     b.HasKey("Id");
 
@@ -212,7 +256,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
             modelBuilder.Entity("TechBlog.NewsManager.API.Domain.Entities.BlogUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -224,17 +268,17 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 29, 16, 38, 26, 658, DateTimeKind.Local).AddTicks(8797));
+                        .HasDefaultValue(new DateTime(2023, 11, 1, 23, 46, 9, 91, DateTimeKind.Local).AddTicks(8645));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<bool>("EmailConfirmed")
                         .ValueGeneratedOnAdd()
@@ -249,7 +293,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                     b.Property<DateTime>("LastUpdateAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 29, 16, 38, 26, 658, DateTimeKind.Local).AddTicks(9270));
+                        .HasDefaultValue(new DateTime(2023, 11, 1, 23, 46, 9, 91, DateTimeKind.Local).AddTicks(8863));
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -260,27 +304,27 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -288,7 +332,7 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("varchar(300)");
 
                     b.HasKey("Id");
 

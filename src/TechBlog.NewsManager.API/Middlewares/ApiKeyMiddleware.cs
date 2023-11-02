@@ -1,4 +1,4 @@
-﻿namespace PoliceDepartment.EvidenceManager.API.Middlewares
+﻿namespace TechBlog.NewsManager.API.Middlewares
 {
     public sealed class ApiKeyMiddleware
     {

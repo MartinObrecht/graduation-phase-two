@@ -3,8 +3,11 @@ using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -43,9 +46,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
                 return services;
             }
 
-
-            services.AddSingleton<ILoggerManager, Infrastructure.Logger.ApplicationInsights.ApplicationInsightsLogger>();
-
+            services.AddSingleton<ILoggerManager, ApplicationInsightsLogger>();
 
             var loggingOptions = new ApplicationInsightsServiceOptions
             {
@@ -82,7 +83,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
                 options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
             });
 
-            services.AddScoped(o => new SqlConnection(configuration.GetConnectionString("SqlServerConnection")));
+            services.AddScoped<DbConnection>(o => new SqlConnection(configuration.GetConnectionString("SqlServerConnection")));
 
             return services;
         }
@@ -90,6 +91,7 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
         {
             services.AddScoped<IIdentityManager, IdentityManager>();
             services.AddScoped<IIdentityContext, IdentityContext>();
+
             services.AddDbContext<IIdentityContext, IdentityContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
@@ -133,9 +135,9 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
             return services;
         }
 
-        public static IApplicationBuilder UseInfrastructureConfiguration(this WebApplication app)
+        public static IApplicationBuilder UseInfrastructureConfiguration(this IApplicationBuilder app)
         {
-            using var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope();
+            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
 
             using var databaseContext = serviceScope.ServiceProvider.GetRequiredService<IDatabaseContext>();
             using var identityContext = serviceScope.ServiceProvider.GetRequiredService<IIdentityContext>();

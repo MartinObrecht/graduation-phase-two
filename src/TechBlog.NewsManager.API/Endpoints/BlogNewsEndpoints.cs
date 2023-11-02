@@ -10,9 +10,9 @@ namespace TechBlog.NewsManager.API.Endpoints
 {
     public static class BlogNewsEndpoints
     {
-        public static IApplicationBuilder MapBlogNewsEndpoints(this WebApplication app)
+        public static IEndpointRouteBuilder MapBlogNewsEndpoints(this IEndpointRouteBuilder endpoints)
         {
-            app.MapMethods(CreateBlogNewHandler.Route, CreateBlogNewHandler.Methods, CreateBlogNewHandler.Handle)
+            endpoints.MapMethods(CreateBlogNewHandler.Route, CreateBlogNewHandler.Methods, CreateBlogNewHandler.Handle)
               .WithTags("Blog New")
               .WithDescription("Create a new Blog New")
               .WithDisplayName("Create Blog New")
@@ -22,7 +22,7 @@ namespace TechBlog.NewsManager.API.Endpoints
               .Produces<BaseResponse>(StatusCodes.Status400BadRequest)
               .Produces<BaseResponse>(StatusCodes.Status401Unauthorized);
 
-            app.MapMethods(GetByStrategyHandler.Route, GetByStrategyHandler.Methods, GetByStrategyHandler.Handle)
+            endpoints.MapMethods(GetByStrategyHandler.Route, GetByStrategyHandler.Methods, GetByStrategyHandler.Handle)
               .WithTags("Blog New")
               .WithDescription("Gets the blog news by a defined strategy")
               .WithDisplayName("Gets blog news by strategy")
@@ -32,7 +32,7 @@ namespace TechBlog.NewsManager.API.Endpoints
               .Produces<BaseResponse>(StatusCodes.Status404NotFound)
               .Produces<BaseResponse>(StatusCodes.Status401Unauthorized);
 
-            app.MapMethods(DeleteBlogNewHandler.Route, DeleteBlogNewHandler.Methods, DeleteBlogNewHandler.Handle)
+            endpoints.MapMethods(DeleteBlogNewHandler.Route, DeleteBlogNewHandler.Methods, DeleteBlogNewHandler.Handle)
               .WithTags("Blog New")
               .WithDescription("Delete a blog new")
               .WithDisplayName("Delete blog new")
@@ -42,7 +42,7 @@ namespace TechBlog.NewsManager.API.Endpoints
               .Produces<BaseResponse>(StatusCodes.Status400BadRequest)
               .Produces<BaseResponse>(StatusCodes.Status401Unauthorized);
 
-            app.MapMethods(UpdateBlogNewHandler.Route, UpdateBlogNewHandler.Methods, UpdateBlogNewHandler.Handle)
+            endpoints.MapMethods(UpdateBlogNewHandler.Route, UpdateBlogNewHandler.Methods, UpdateBlogNewHandler.Handle)
               .WithTags("Blog New")
               .WithDescription("Update a blog new")
               .WithDisplayName("Update blog new")
@@ -52,7 +52,7 @@ namespace TechBlog.NewsManager.API.Endpoints
               .Produces<BaseResponse>(StatusCodes.Status400BadRequest)
               .Produces<BaseResponse>(StatusCodes.Status401Unauthorized);
 
-            return app;
+            return endpoints;
         }
     }
 }

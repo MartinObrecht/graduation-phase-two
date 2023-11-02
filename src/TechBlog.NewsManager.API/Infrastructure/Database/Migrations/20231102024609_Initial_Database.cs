@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.Migrations
+namespace TechBlog.NewsManager.API.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_Identity : Migration
+    public partial class Initial_Database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,10 +15,10 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "varchar(300)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "varchar(300)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,21 +29,21 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Id = table.Column<string>(type: "varchar(300)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false),
                     BlogUserType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Enabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 29, 16, 38, 26, 658, DateTimeKind.Local).AddTicks(8797)),
-                    LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 29, 16, 38, 26, 658, DateTimeKind.Local).AddTicks(9270)),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 11, 1, 23, 46, 9, 91, DateTimeKind.Local).AddTicks(8645)),
+                    LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 11, 1, 23, 46, 9, 91, DateTimeKind.Local).AddTicks(8863)),
+                    UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
+                    NormalizedEmail = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PasswordHash = table.Column<string>(type: "varchar(300)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "varchar(300)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "varchar(300)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "varchar(300)", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -55,14 +56,44 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                 });
 
             migrationBuilder.CreateTable(
+                name: "IdentityRoleClaim<int>",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "varchar(300)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "varchar(300)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdentityRoleClaim<int>", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IdentityUserClaim<int>",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "varchar(300)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "varchar(300)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdentityUserClaim<int>", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RoleId = table.Column<string>(type: "varchar(300)", nullable: false),
+                    ClaimType = table.Column<string>(type: "varchar(300)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "varchar(300)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,9 +112,9 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "varchar(300)", nullable: false),
+                    ClaimType = table.Column<string>(type: "varchar(300)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "varchar(300)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -100,10 +131,10 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "varchar(300)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "varchar(300)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "varchar(300)", nullable: true),
+                    UserId = table.Column<string>(type: "varchar(300)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,8 +151,8 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(300)", nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(300)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,10 +175,10 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "varchar(300)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "varchar(300)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(300)", nullable: false),
+                    Value = table.Column<string>(type: "varchar(300)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -165,14 +196,14 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tags = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false),
+                    Body = table.Column<string>(type: "varchar(300)", nullable: false),
+                    Tags = table.Column<string>(type: "varchar(300)", nullable: true),
                     Enabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    BlogUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 29, 16, 38, 26, 659, DateTimeKind.Local).AddTicks(5379)),
-                    LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 29, 16, 38, 26, 659, DateTimeKind.Local).AddTicks(5817))
+                    BlogUserId = table.Column<string>(type: "varchar(300)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 11, 1, 23, 46, 9, 92, DateTimeKind.Local).AddTicks(1810)),
+                    LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 11, 1, 23, 46, 9, 92, DateTimeKind.Local).AddTicks(2169))
                 },
                 constraints: table =>
                 {
@@ -249,6 +280,12 @@ namespace TechBlog.NewsManager.API.Infrastructure.Authentication.Configuration.M
 
             migrationBuilder.DropTable(
                 name: "BlogNew");
+
+            migrationBuilder.DropTable(
+                name: "IdentityRoleClaim<int>");
+
+            migrationBuilder.DropTable(
+                name: "IdentityUserClaim<int>");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

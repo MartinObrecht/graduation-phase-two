@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
 using TechBlog.NewsManager.API.Domain.Database;
@@ -14,12 +14,12 @@ namespace TechBlog.NewsManager.API.Infrastructure.Database.Repositories
     public sealed class BlogNewsRepository : IBlogNewsRepository
     {
         private readonly IDatabaseContext _context;
-        private readonly SqlConnection _databaseConnection;
+        private readonly DbConnection _databaseConnection;
         private readonly ILoggerManager _logger;
 
         private readonly int _timeout;
 
-        public BlogNewsRepository(IDatabaseContext context, SqlConnection databaseConnection, IConfiguration configuration, ILoggerManager logger)
+        public BlogNewsRepository(IDatabaseContext context, DbConnection databaseConnection, IConfiguration configuration, ILoggerManager logger)
         {
             _context = context;
             _databaseConnection = databaseConnection;
