@@ -40,8 +40,6 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.BlogUser
             var responseBody = await response.Content.ReadFromJsonAsync<BaseResponse>();
             responseBody.Success.Should().BeFalse();
             responseBody.ResponseDetails.Message.Should().Be(ResponseMessage.GenericError.GetDescription());
-
-            await _fixture.ClearDb();
         }
 
         [Fact]
@@ -82,8 +80,9 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.BlogUser
                     blogUserType: API.Domain.ValueObjects.BlogUserType.JOURNALIST
                 );
 
+            await _fixture.CreateJournalist();
+
             _fixture.WithApiKeyHeader();
-            await _fixture.Client.PostAsJsonAsync(CreateBlogUserHandler.Route, body);
 
             //Act
             var response = await _fixture.Client.PostAsJsonAsync(CreateBlogUserHandler.Route, body);
@@ -134,8 +133,6 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.BlogUser
             responseBody.ResponseDetails.Message.Should().Be(ResponseMessage.InvalidInformation.GetDescription());
             foreach (var error in detailsMessage)
                 responseBody.ResponseDetails.Errors.Should().Contain(error.GetDescription());
-
-            await _fixture.ClearDb();
         }
     }
 }
