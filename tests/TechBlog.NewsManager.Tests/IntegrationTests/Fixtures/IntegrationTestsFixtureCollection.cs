@@ -12,6 +12,7 @@ using TechBlog.NewsManager.API.Domain.ValueObjects;
 using Dapper;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
 
 namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
 {
@@ -74,6 +75,40 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
                 Client.DefaultRequestHeaders.Remove(IntegrationTestsHelper.ApiKeyName);
         }
 
+        public async Task CreateJournalist()
+        {
+            var body = new CreateBlogUserRequest
+                (
+                    email: IntegrationTestsHelper.JournalistEmail,
+                    password: IntegrationTestsHelper.FakePassword,
+                    name: IntegrationTestsHelper.JournalistName,
+                    blogUserType: BlogUserType.JOURNALIST
+                );
+
+            WithApiKeyHeader();
+
+            await Client.PostAsJsonAsync(CreateBlogUserHandler.Route, body);
+
+            WithoutApiKeyHeader();
+        }
+
+        public async Task CreateReader()
+        {
+            var body = new CreateBlogUserRequest
+                (
+                    email: IntegrationTestsHelper.ReaderEmail,
+                    password: IntegrationTestsHelper.FakePassword,
+                    name: IntegrationTestsHelper.ReaderName,
+                    blogUserType: BlogUserType.READER
+                );
+
+            WithApiKeyHeader();
+
+            await Client.PostAsJsonAsync(CreateBlogUserHandler.Route, body);
+
+            WithoutApiKeyHeader();
+        }
+
         public async Task AuthenticateAsync(BlogUserType userType)
         {
             Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await GetJwtAsync(userType));
@@ -119,6 +154,7 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
         {
             if (disposing)
             {
+                ClearDb().Wait();
                 _connection.Close();
                 _connection.Dispose();
                 Client.Dispose();
