@@ -62,9 +62,16 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
             Dispose(false);
         }
 
-        public void AddApiKeyHeader()
+        public void WithApiKeyHeader()
         {
-            Client.DefaultRequestHeaders.Add(IntegrationTestsHelper.ApiKeyName, IntegrationTestsHelper.ApiKeyValue);
+            if (!Client.DefaultRequestHeaders.TryGetValues(IntegrationTestsHelper.ApiKeyName, out _))
+                Client.DefaultRequestHeaders.Add(IntegrationTestsHelper.ApiKeyName, IntegrationTestsHelper.ApiKeyValue);
+        }
+
+        public void WithoutApiKeyHeader()
+        {
+            if (Client.DefaultRequestHeaders.TryGetValues(IntegrationTestsHelper.ApiKeyName, out _))
+                Client.DefaultRequestHeaders.Remove(IntegrationTestsHelper.ApiKeyName);
         }
 
         public async Task AuthenticateAsync(BlogUserType userType)
@@ -85,6 +92,21 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
             var accessToken = await accessTokenResponse.Content.ReadFromJsonAsync<AccessTokenModel>();
 
             return accessToken.AccessToken;
+        }
+
+        public async Task ClearDb()
+        {
+            await Task.WhenAll
+            (
+                _connection.ExecuteAsync("DELETE FROM AspNetRoleClaims"),
+                _connection.ExecuteAsync("DELETE FROM AspNetRoles"),
+                _connection.ExecuteAsync("DELETE FROM AspNetUserClaims"),
+                _connection.ExecuteAsync("DELETE FROM AspNetUserLogins"),
+                _connection.ExecuteAsync("DELETE FROM AspNetUserRoles"),
+                _connection.ExecuteAsync("DELETE FROM AspNetUsers"),
+                _connection.ExecuteAsync("DELETE FROM AspNetUserTokens"),
+                _connection.ExecuteAsync("DELETE FROM BlogNew")
+            );
         }
 
         public void Dispose()
