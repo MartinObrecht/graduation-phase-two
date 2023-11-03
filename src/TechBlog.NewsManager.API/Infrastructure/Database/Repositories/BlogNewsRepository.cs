@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System.Data.SqlClient;
 using System.Text;
 using TechBlog.NewsManager.API.Domain.Database;
