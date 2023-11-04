@@ -1,8 +1,6 @@
-﻿using FluentValidation;
-using Microsoft.ApplicationInsights;
+﻿using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Newtonsoft.Json;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using TechBlog.NewsManager.API.Domain.Logger;
 

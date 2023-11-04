@@ -1,10 +1,7 @@
-﻿using Azure;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using TechBlog.NewsManager.API.Domain.Entities;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace TechBlog.NewsManager.API.Domain.Extensions
 {
