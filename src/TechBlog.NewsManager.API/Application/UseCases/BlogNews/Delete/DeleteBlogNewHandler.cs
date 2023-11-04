@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using TechBlog.NewsManager.API.Domain.Database;
-using TechBlog.NewsManager.API.Domain.Exceptions;
 using TechBlog.NewsManager.API.Domain.Extensions;
 using TechBlog.NewsManager.API.Domain.Logger;
 using TechBlog.NewsManager.API.Domain.Responses;
