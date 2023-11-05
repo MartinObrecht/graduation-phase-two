@@ -13,6 +13,10 @@ using Dapper;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using TechBlog.NewsManager.API.Application.UseCases.BlogUsers.Create;
+using Microsoft.Net.Http.Headers;
+using TechBlog.NewsManager.API.Infrastructure.Database.Context;
+using Microsoft.EntityFrameworkCore;
+using TechBlog.NewsManager.API.Domain.Responses;
 
 namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
 {
@@ -22,6 +26,7 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
     public class IntegrationTestsFixture : IDisposable
     {
         private readonly DbConnection _connection;
+        private SqlServerContext _context;
         public HttpClient Client { get; }
 
         public IntegrationTestsFixture()
@@ -42,13 +47,15 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
                         services.RemoveAll(typeof(DbConnection));
                         services.AddScoped(o => _connection);
                         _connection.Open();
-                        _connection.Execute(CreateDatabase.Script);
+                        _connection.Execute(IntegrationTestsHelper.CreateDatabaseScript);
                         services.AddDatabase(_connection);
                         services.AddIdentity(_connection);
                     });
 
                     builder.Configure(app =>
                     {
+                        _context = app.ApplicationServices.GetRequiredService<SqlServerContext>();
+
                         app.UseIntegrationTestsConfiguration();
                     });
 
@@ -73,6 +80,49 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
         {
             if (Client.DefaultRequestHeaders.TryGetValues(IntegrationTestsHelper.ApiKeyName, out _))
                 Client.DefaultRequestHeaders.Remove(IntegrationTestsHelper.ApiKeyName);
+        }
+
+        public async Task AuthenticateAsync(BlogUserType userType)
+        {
+            if (!Client.DefaultRequestHeaders.TryGetValues(HeaderNames.Authorization, out _))
+                Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await GetJwtAsync(userType));
+        }
+
+        public void WithoutAuthentication()
+        {
+            if (Client.DefaultRequestHeaders.TryGetValues(HeaderNames.Authorization, out _))
+                Client.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
+        }
+
+        private async Task<string> GetJwtAsync(BlogUserType userType)
+        {
+            WithApiKeyHeader();
+
+            var accessTokenResponse = await Client.PostAsJsonAsync(LoginHandler.Route, new LoginRequest
+            (
+                Username: userType == BlogUserType.JOURNALIST ?
+                                 IntegrationTestsHelper.JournalistEmail :
+                                 IntegrationTestsHelper.ReaderEmail,
+                Password: IntegrationTestsHelper.FakePassword
+            ));
+
+            var accessToken = await accessTokenResponse.Content.ReadFromJsonAsync<BaseResponseWithValue<AccessTokenModel>>();
+
+            WithoutApiKeyHeader();
+
+            return accessToken.Value.AccessToken;
+        }
+
+        public async Task CreateUser(BlogUserType userType)
+        {
+            if(userType == BlogUserType.JOURNALIST)
+            {
+                await CreateJournalist();
+
+                return;
+            }
+
+            await CreateReader();
         }
 
         public async Task CreateJournalist()
@@ -107,26 +157,6 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
             await Client.PostAsJsonAsync(CreateBlogUserHandler.Route, body);
 
             WithoutApiKeyHeader();
-        }
-
-        public async Task AuthenticateAsync(BlogUserType userType)
-        {
-            Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await GetJwtAsync(userType));
-        }
-
-        private async Task<string> GetJwtAsync(BlogUserType userType)
-        {
-            var accessTokenResponse = await Client.PostAsJsonAsync(LoginHandler.Route, new LoginRequest
-            (
-                Username: userType == BlogUserType.JOURNALIST ?
-                                 IntegrationTestsHelper.JournalistEmail :
-                                 IntegrationTestsHelper.ReaderEmail,
-                Password: IntegrationTestsHelper.FakePassword
-            ));
-
-            var accessToken = await accessTokenResponse.Content.ReadFromJsonAsync<AccessTokenModel>();
-
-            return accessToken.AccessToken;
         }
 
         public async Task ClearDb()

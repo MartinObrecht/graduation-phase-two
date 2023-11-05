@@ -33,8 +33,10 @@ namespace TechBlog.NewsManager.API.DependencyInjection.Configurations
 
             app.UseMiddlewareIfNotDevelopment<ApiKeyMiddleware>(isDevelopment);
 
-            app.UseApplicationEndpoints();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
+            app.UseApplicationEndpoints();
 
             return app;
         }

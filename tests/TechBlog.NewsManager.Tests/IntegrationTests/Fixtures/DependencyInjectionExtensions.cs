@@ -49,13 +49,13 @@ namespace TechBlog.NewsManager.Tests.IntegrationTests.Fixtures
 
         public static IApplicationBuilder UseIntegrationTestsConfiguration(this IApplicationBuilder app)
         {
-            app.UseAuthentication();
             app.UseRouting();
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseHttpsRedirection();
             app.UseMiddleware<ApiKeyMiddleware>();
-            app.UseApplicationEndpoints();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseApplicationEndpoints();
 
             return app;
         }
